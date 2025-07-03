@@ -1,3 +1,4 @@
+import DashboardPage from "@/components/DashboardPage";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 
@@ -7,10 +8,13 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
+
   return (
     <html lang="en">
       <body>
         <NavBar/>
+        <DashboardPage/>
         {children}
       </body>
 

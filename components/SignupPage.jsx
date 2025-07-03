@@ -23,7 +23,7 @@ export default function SignupPage() {
   const [phone, setphone] = useState('')
   
 
-  async function clickedLogin(e)
+  async function clickedSignup(e)
   {
     e.preventDefault()
     //finish what to do next
@@ -60,7 +60,7 @@ export default function SignupPage() {
         <div className='flex flex-row justify-center items-center'><input type='text' className='rounded-xl border-none text-amber-950 h-10 w-70 m-2 p-2' placeholder='Enter your address' onChange={(e)=>{setaddress(e.target.value)}} value={address}></input></div>
         <div className='flex flex-row justify-center items-center'><input type='text' className='rounded-xl border-none text-amber-950 h-10 w-70 m-2 p-2' placeholder='Enter your phone number' onChange={(e)=>{setphone(e.target.value)}} value={phone}></input></div>
         
-        <button className='bg-amber-950 text-white p-3 m-2 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all' onClick={clickedLogin}>Sign Up</button>
+        <button className='bg-amber-950 text-white p-3 m-2 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all' onClick={clickedSignup}>Sign Up</button>
       </form>
       <div className='text-sm flex flex-col justify-center items-center'>
         <h1 className='text-black'>Already have an existing account?</h1>
