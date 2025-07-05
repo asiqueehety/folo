@@ -42,7 +42,7 @@ export default function LoginPage() {
       const data = await res.json()
       if (res.ok) {
         localStorage.setItem('token', data.token) // Store JWT in browser
-        router.push('/home') // Redirect to homepage or dashboard
+        router.push('/') // Redirect to homepage or dashboard
       } else {
         alert(data.error || 'Login failed')
       }

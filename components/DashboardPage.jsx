@@ -22,13 +22,8 @@ const font2 = Lato({
 export default function DashboardPage() {
   const [showDash, setShowDash] = useState(false)
   const router = useRouter()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {setIsLoggedIn(true);setIsMounted(true);}
-  }, [])
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isMounted, setIsMounted] = useState(true)
 
     
   function logoutClicked()
