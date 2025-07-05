@@ -4,7 +4,6 @@ import MapPage from "@/components/Map";
 export default function Home() {
   return (
     <div>
-      <MapPage/>
     </div>
   );
 }

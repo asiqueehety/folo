@@ -40,7 +40,7 @@ export default function MapPage() {
     const map = useMapEvents({
       click(e) {
         if(position.length==0) map.locate(); // Get user's location on first click
-        else {
+        else if(position.length < 5){
           //how do i get the latlng of the clicked place in here?
             const { latlng } = e;
             setPosition((prev) => [...prev, latlng]);
@@ -109,7 +109,7 @@ export default function MapPage() {
 
 
   return (
-    <MapContainer center={[0,0]} zoom={30} scrollWheelZoom={true} className='w-200 h-100 rounded-4xl ml-30 mt-30'>
+    <MapContainer center={[0,0]} zoom={30} scrollWheelZoom={true} className='rounded-4xl ml-30 mt-30'>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

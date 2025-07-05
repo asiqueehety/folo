@@ -23,18 +23,19 @@ export default function DashboardPage() {
   const [showDash, setShowDash] = useState(false)
   const router = useRouter()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    // Safe to use localStorage here
     const token = localStorage.getItem('token')
-    setIsLoggedIn(!!token)
+    if (token) {setIsLoggedIn(true);setIsMounted(true);}
   }, [])
 
+    
   function logoutClicked()
   {
     localStorage.removeItem('token')
-
+    setIsLoggedIn(false)
+    setShowDash(false)
     router.push('/login')
   }
 
@@ -45,13 +46,13 @@ export default function DashboardPage() {
   }
 
   return (
-    <>
-      {isLoggedIn && <div className={`${font2.className} fixed`}>
-      <motion.button className='bg-blue-200 rounded-full fixed top-35 left-5 hover:bg-blue-400 transition-all z-100' onClick={()=>{setShowDash(!showDash)}}
+    <div>
+      {isMounted && <div className={`${font2.className} fixed`}>
+      {isLoggedIn && <motion.button className='bg-blue-200 rounded-full fixed top-35 left-5 hover:bg-blue-400 transition-all z-[100]' onClick={()=>{setShowDash(!showDash)}}
       animate={showDash? {rotate:0}:{rotate:180}}
       transition={{duration:0.1}}>
           <Image src={dashboard} width={40} height={40} alt='dashboard open/close button'></Image>
-      </motion.button>
+      </motion.button>}
       <AnimatePresence>
           {showDash && 
           <motion.div className='flex flex-col justify-center items-center bg-cyan-800 text-white text-lg h-full w-400 rounded-br-4xl'
@@ -75,7 +76,7 @@ export default function DashboardPage() {
       </AnimatePresence>
       
     </div>}
-    </>
+    </div>
 
   )
 }

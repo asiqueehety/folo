@@ -19,7 +19,7 @@ const font2 = Lato({
 
 export default function LoginPage() {
 
-  const [email,setEmail] = useState('')
+  const [emailOrUsername,setEmail] = useState('')
   const [pw,setpw] = useState('')
   const router = useRouter()
   
@@ -36,7 +36,7 @@ export default function LoginPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email,pw}),
+        body: JSON.stringify({emailOrUsername,pw}),
         
       })
       const data = await res.json()
@@ -57,8 +57,8 @@ export default function LoginPage() {
     <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-4 rounded-3xl`}>
       <h1 className={`${font1.className} text-6xl text-blue-950`}>Login to FoLo</h1>
       <form className='flex flex-col justify-center items-center m-4 mt-15'>
-        <div className='flex flex-row justify-center items-center'><input type='text' className='rounded-xl border-none text-amber-950 h-10 w-80 m-2 p-2' placeholder='Enter your email' onChange={(e)=>{setEmail(e.target.value)}} value={email}></input></div>
-        <div className='flex flex-row justify-center items-center'><input type='password' className='rounded-xl border-none text-amber-950 h-10 w-80 m-2 p-2' placeholder='Enter your password' onChange={(e)=>{setpw(e.target.value)}} value={pw}></input></div>
+        <div className='flex flex-row justify-center items-center'><input type='text' className='rounded-xl border-none text-amber-950 h-10 w-80 m-2 p-2' placeholder='Email or Username' onChange={(e)=>{setEmail(e.target.value)}} value={emailOrUsername}></input></div>
+        <div className='flex flex-row justify-center items-center'><input type='password' className='rounded-xl border-none text-amber-950 h-10 w-80 m-2 p-2' placeholder='Password' onChange={(e)=>{setpw(e.target.value)}} value={pw}></input></div>
         <button className='bg-amber-950 text-white p-3 m-2 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all' onClick={clickedLogin}>Login</button>
       </form>
       <div className='text-sm flex flex-col justify-center items-center'>
