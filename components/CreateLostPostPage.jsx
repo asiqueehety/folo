@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import SearchableDropdown from './reusables/SearchableDropdown'
 import dynamic from 'next/dynamic';
 const MapPage = dynamic(() => import('@/components/Map'), { ssr: false });
+import jwt from 'jsonwebtoken';
 
 const font1 = Mulish(
 {
@@ -27,13 +28,14 @@ export default function CreateLostPostPage() {
   const [con_lastused_time, set_con_lastused_time] = useState('')
   const [con_lastused_date, set_con_lastused_date] = useState('')
   const [con_lastused, set_con_lastused] = useState({})
-  const [con_location, set_con_location] = useState({})
+  const [con_location, set_con_location] = useState([])
   const [con_color, set_con_color] = useState('')
-  const [con_shape, set_con_shape] = useState('')
   const [con_model, set_con_model] = useState('')
   const [con_special, set_con_special] = useState('')
   const [con_details, set_con_details] = useState({})
   const [con_pic, set_con_pic] = useState('')
+  const [con_loser_id, set_con_loser_id] = useState('')
+  const [con_reward, set_con_reward] = useState('')
   const [con, set_con] = useState({})
   
   const shapes = ["Circle","Rectangle","Square","Oval","Cylinder","Sphere","Triangle","Heart","Star","Hexagon"];
@@ -57,10 +59,76 @@ export default function CreateLostPostPage() {
     });
   }, [con_color, con_model, con_special]);
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    fetch('/api/get_loser_id', {
+        method: 'GET',
+        headers: {
+        'Authorization': `Bearer ${token}`,
+        },
+    })
+        .then(res => res.json())
+        .then(data => {
+        if (data.userId) {
+            set_con_loser_id(data.userId);
+            console.log('User ID:', data.userId);
+        } else {
+            console.error('User ID not found');
+        }
+        })
+        .catch(err => {
+        console.error('Error fetching user ID:', err);
+        });
+    }, []);
+
   function allOk()
   {
-    return !(con_name=='' || con_type=='' || con_color=='' || con_lastused_time=='' || con_lastused_date == '' || con_location == [{}])
+    return !(con_name=='' || con_type=='' || con_color=='' || con_lastused_time=='' || con_lastused_date == '' || con_location == [])
   }
+
+    const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const res = await fetch('/api/upload_image', {
+        method: 'POST',
+        body: formData,
+        });
+
+        const data = await res.json();
+        const imageUrl = data.url;
+
+        set_con_pic(imageUrl); // ← This sets the image URL as string
+        console.log("Image uploaded:", imageUrl);
+    } catch (err) {
+        console.error("Upload failed:", err);
+    }
+    };
+
+    function submitClicked()
+    {
+        set_con
+        (
+            {
+                name: con_name,
+                type: con_type,
+                lastused: con_lastused,
+                details: con_details,
+                location:con_location,
+                pic: con_pic,
+                reward: con_reward,
+                loser_id: con_loser_id,             
+            }
+        )
+        console.log(con);
+    }
+
 
   return (
     <div className={`flex xl:flex-row flex-col`}>
@@ -71,7 +139,7 @@ export default function CreateLostPostPage() {
                     <input type='text' className={inputStyles()} placeholder='What was the item?' onChange={(e)=>{set_con_name(e.target.value)}} value={con_name}></input>
                     <SearchableDropdown onSelect={(val) => set_con_type(val)} />
                 </div>
-                <input type='file' accept='image/*' className={inputStyles()} onChange={(e) => {set_con_pic(e.target.files[0])}}></input>
+                <input type='file' accept='image/*' className={inputStyles()} onChange={handleUpload}></input>
                 <div>
                     <h1 className={`${font2.className} m-2 lg:text-2xl text-md`}>Add details of the lost item</h1>
                     <div className='flex flex-col'>
@@ -115,9 +183,10 @@ export default function CreateLostPostPage() {
 
                         <input type='date' className={inputStyles()} placeholder='When did you last see it?' onChange={(e)=>{set_con_lastused_date(e.target.value)}} value={con_lastused_date} max={new Date().toISOString().split("T")[0]}></input>
                     </div>
+                    <input type='text' className={inputStyles()} placeholder='Declare a reward for the finder' onChange={(e)=>{set_con_reward(e.target.value)}}></input>
                 </div>
             </form>
-            <button className={` ${!allOk()? 'opacity-25 disabled':'hover:bg-blue-600 hover:text-white'} px-6 py-2 border-2 border-blue-600 text-blue-600 rounded-full  transition`}>
+            <button className={` ${!allOk()? 'opacity-25 disabled':'hover:bg-blue-600 hover:text-white'} px-6 py-2 border-2 border-blue-600 text-blue-600 rounded-full  transition`} onClick={submitClicked}>
                 Submit
             </button>
         </div>
@@ -125,8 +194,6 @@ export default function CreateLostPostPage() {
             <h1 className={`${font2.className} lg:text-4xl text-xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 pb-1 lg:mb-0 mb-2`}>Where could it probably be?</h1>
             <MapPage  onSelect={(val) => set_con_location(val)}/>
         </div>
-        
-
     </div>
   )
 }
