@@ -27,7 +27,7 @@ export default function NavBar() {
 
   return (
     <div className={`${font1.className}`}>
-      <nav className='w-full h-30 bg-cyan-900 grid lg:grid-cols-[7fr_1fr] grid-cols-[5fr_4fr]'>
+      <nav className='w-full h-30 bg-cyan-900 grid lg:grid-cols-[7fr_2fr] md:grid-cols-[5fr_2fr] grid-cols-[1fr_1fr] '>
         <div className='m-4  text-white'>
           <h1 className='text-6xl'><button onClick={()=>{router.push('/')}}>FoLo</button></h1>
           <p>Never lose a thing.</p>

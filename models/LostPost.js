@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const lostPostSchema = new mongoose.Schema({
 
     content_name:{type: String, required: true},
-    email:{type: String, required: true},
-    pw_hash:{type: String, required: true},
-    phone:{type: String, required: true},
-    address:{type: String, required: true},
-    role:{type: String, required: true},
+    content_type:{type: String, required: true},
+    content_id:{type: Object, required: true},
+    content_location:{type: [Object], required: true},
+    content_image:{type: String, required: true},
+    loser_id:{type: String, required: true},
     
 },{timestamps:true})
 
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const LostPost = mongoose.models.LostPost || mongoose.model('LostPost', lostPostSchema);
 
-export default User
+export default LostPost

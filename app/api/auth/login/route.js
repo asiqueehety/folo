@@ -32,7 +32,7 @@ export async function POST(request) {
         role: user.role,
       },
       process.env.JWT_secret,
-      { expiresIn: '7d' }
+      { expiresIn: '1h' }
     )
     // 4. Return token to client
     return NextResponse.json({ token }, { status: 200 })
