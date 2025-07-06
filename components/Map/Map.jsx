@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow.src,
 });
 
-export default function MapPage() {
+export default function MapPage({ onSelect }) {
   const [userPosition, setUserPosition] = useState(null);
   const [markers, setMarkers] = useState([]);
   useEffect(() => {
@@ -39,8 +39,10 @@ export default function MapPage() {
     useMapEvents({
       click(e) {
         if (markers.length < 5) {
-          setMarkers((prev) => [...prev, e.latlng]);
-          console.log(markers);
+          const newMarkers = [...markers, e.latlng];
+          setMarkers(newMarkers);
+          onSelect(newMarkers); // now using updated array
+          console.log(markers)
         }
       },
     });
@@ -66,12 +68,12 @@ export default function MapPage() {
     console.log(markers)
   }
   return (
-    <div className=' bg-stone-800/40 h-fit w-fit lg:m-4 m-0 lg:rounded-2xl rounded-none backdrop-blur-md border border-white/30 shadow-lg shadow-stone-800 flex lg:flex-row flex-col'>
+    <div className=' bg-white h-fit w-fit lg:m-2 m-0 lg:rounded-2xl rounded-xl backdrop-blur-md border border-white/30 flex lg:flex-row flex-col'>
       <MapContainer
         center={userPosition}
         zoom={100}
         scrollWheelZoom={true}
-        className="lg:rounded-4xl rounded-none lg:w-200 lg:h-150 w-screen h-80 lg:shadow-stone-700 lg:shadow-lg shadow-none lg:m-3 m-0"
+        className="lg:rounded-4xl lg:rounded-br-none rounded-2xl rounded-br-none xl:w-200 lg:w-220 md:w-180 w-73 lg:h-150 h-100 lg:shadow-stone-700 lg:shadow-lg shadow-none lg:m-2 m-1"
       >
         <TileLayer
           attribution='&copy; <a href="https://asiqueehety.vercel.app" target="_blank">Asique Ehety</a>'
@@ -79,7 +81,7 @@ export default function MapPage() {
         />
         <MarkerLayer />
       </MapContainer>
-      <button className={`bg-gray-800 text-white p-2 m-1 text-sm rounded-4xl h-fit w-fit transition-all ${markers.length == 1? 'disabled opacity-20':''}`} onClick={()=>{undoClicked()}}>
+      <button className={`bg-gray-800 text-white p-2 m-1 text-sm rounded-2xl h-fit w-fit transition-all ${markers.length == 1? 'disabled opacity-20':''}`} onClick={()=>{undoClicked()}}>
         Undo
       </button>
     </div>
