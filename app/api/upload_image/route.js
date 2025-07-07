@@ -21,18 +21,6 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Helper to run multer inside App Router
-function runMiddleware(req, res, fn) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
-}
-
 // Handle POST request
 export async function POST(req) {
   const formData = await req.formData();

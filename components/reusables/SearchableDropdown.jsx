@@ -1,9 +1,4 @@
 'use client'
-
-import { useState } from 'react'
-import { Combobox } from '@headlessui/react'
-import { inputStyles } from '../CreateLostPostPage';
-
 const options = [
   // Daily Use Items
   "Watch", "Clock", "Phone", "Wallet", "Keys", "Charger", "Remote", "Glasses", "Sunglasses", "Backpack",
@@ -57,47 +52,54 @@ const options = [
   "Ball", "Toy", "Puzzle", "Doll", "Board game", "Playing cards", "Battery", "Charger", "Controller"
 ];
 
+import { useState } from 'react'
+import { Combobox } from '@headlessui/react'
 
 export default function SearchableDropdown({ onSelect }) {
-  const [selected, setSelected] = useState('')
-  const [query, setQuery] = useState('')
+  const [selected, setSelected] = useState('');
+  const [query, setQuery] = useState('');
 
   const filteredOptions = options.filter(option =>
     option.toLowerCase().includes(query.toLowerCase())
-  )
+  );
 
   return (
-    <div className={`${inputStyles()} relative`}>
-      <Combobox value={selected} 
-      onChange={(value) => {
+    <div className="relative w-full max-w-md m-2">
+      <Combobox
+        value={selected}
+        onChange={(value) => {
           setSelected(value);
           onSelect(value);
-        }}>
-        <Combobox.Input
-          className="w-full rounded-xl border border-gray-300 bg-white/90 px-4 py-3 text-gray-800 shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="What type of item was it?"
-        />
-        <Combobox.Options className="bg-white rounded-xl mt-2 shadow-lg border border-gray-200 max-h-60 overflow-auto z-50">
-          {filteredOptions.length === 0 && query !== '' ? (
-            <div className="px-4 py-2 text-gray-500">No match</div>
-          ) : (
-            filteredOptions.map((option, idx) => (
-              <Combobox.Option
-                key={idx}
-                value={option}
-                className={({ active }) =>
-                  `px-4 py-2 cursor-pointer ${
-                    active ? 'bg-blue-500 text-white' : 'text-gray-800'
-                  }`
-                }
-              >
-                {option}
-              </Combobox.Option>
-            ))
-          )}
-        </Combobox.Options>
+        }}
+      >
+        <div className="relative mr-4">
+          <Combobox.Input
+            className="w-full rounded-xl border border-gray-300 bg-white/90 px-4 py-3 text-gray-800 shadow focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:bg-gray-200 transition-all"
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="What type of item was it?"
+          />
+          
+          <Combobox.Options className="absolute top-full left-0 w-full bg-white rounded-xl mt-1 shadow-lg border border-gray-200 max-h-60 overflow-auto z-50">
+            {filteredOptions.length === 0 && query !== '' ? (
+              <div className="px-4 py-2 text-gray-500">No match</div>
+            ) : (
+              filteredOptions.map((option, idx) => (
+                <Combobox.Option
+                  key={idx}
+                  value={option}
+                  className={({ active }) =>
+                    `px-4 py-2 cursor-pointer ${
+                      active ? 'bg-blue-500 text-white' : 'text-gray-800'
+                    }`
+                  }
+                >
+                  {option}
+                </Combobox.Option>
+              ))
+            )}
+          </Combobox.Options>
+        </div>
       </Combobox>
     </div>
-  )
+  );
 }

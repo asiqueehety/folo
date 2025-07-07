@@ -2,6 +2,7 @@ import DashboardPage from "@/components/DashboardPage";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import MapPage from "@/components/Map";
+import Background from "@/components/Background";
 
 export const metadata = {
   title: "FoLo - Found, lost and co.",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <NavBar/>
+        <Background/>
         <section className="pt-20"></section>
         {children}
       </body>

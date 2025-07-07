@@ -8,7 +8,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation'
 import { getComplementaryColor } from '@/lib/complementaryColor'
 
-const MapPage = dynamic(() => import('@/components/Map'), { ssr: false });
+const MapPage2 = dynamic(() => import ('@/components/Map2'), { ssr: false });
 
 const font1 = Mulish(
 {
@@ -29,33 +29,32 @@ export function inputStyles0()
 {
     return "w-full max-w-md px-4 py-2 bg-white/30 backdrop-blur-md border border-gray-300 rounded-xl shadow-md placeholder-gray-600 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 transition";
 }
-export default function CreateLostPostPage() {
+export default function CreateFoundPostPage() {
   const [con_name, set_con_name] = useState('')
   const [con_type, set_con_type] = useState('')
-  const [con_lastused_time, set_con_lastused_time] = useState('')
-  const [con_lastused_date, set_con_lastused_date] = useState('')
-  const [con_lastused, set_con_lastused] = useState({})
+  const [con_foundwhen_time, set_con_foundwhen_time] = useState('')
+  const [con_foundwhen_date, set_con_foundwhen_date] = useState('')
+  const [con_foundwhen, set_con_foundwhen] = useState({})
   const [con_location, set_con_location] = useState([])
   const [con_color, set_con_color] = useState('')
   const [con_model, set_con_model] = useState('')
   const [con_special, set_con_special] = useState('')
   const [con_details, set_con_details] = useState({})
   const [con_pic, set_con_pic] = useState('')
-  const [con_loser_id, set_con_loser_id] = useState('')
-  const [con_reward, set_con_reward] = useState('')
+  const [con_finder_id, set_con_finder_id] = useState('')
   const [selectedFile, setSelectedFile] = useState(null);
   const router = useRouter();
 
   useEffect(() =>
   {
-    set_con_lastused
+    set_con_foundwhen
     ({
-        time: con_lastused_time,
-        date: con_lastused_date,
+        time: con_foundwhen_time,
+        date: con_foundwhen_date,
     });
-  }, [con_lastused_time, con_lastused_date]);
+  }, [con_foundwhen_time, con_foundwhen_date]);
 
-  useEffect(() =>
+    useEffect(() =>
   {
     set_con_details
     ({
@@ -78,7 +77,7 @@ export default function CreateLostPostPage() {
         .then(res => res.json())
         .then(data => {
         if (data.userId) {
-            set_con_loser_id(data.userId);
+            set_con_finder_id(data.userId);
             console.log('User ID:', data.userId);
         } else {
             router.push('/login')
@@ -91,7 +90,7 @@ export default function CreateLostPostPage() {
 
   function allOk()
   {
-    return !(con_name=='' || con_type=='' || con_color=='' || con_lastused_time=='' || con_lastused_date == '' || con_location.length < 2)
+    return !(con_name=='' || con_type=='' || con_color=='' || con_foundwhen_time=='' || con_foundwhen_date == '' || con_location.length < 1)
   }
 
     const handleUpload = async (e) => {
@@ -122,16 +121,15 @@ export default function CreateLostPostPage() {
         {
             content_name: con_name,
             content_type: con_type,
-            content_lastused: con_lastused,
+            content_foundwhen: con_foundwhen,
             content_details: con_details,
             content_location:con_location,
             content_pic: con_pic,
-            loser_id: con_loser_id, 
-            finder_reward: con_reward,   
+            finder_id: con_finder_id,  
         }
         console.log(con_data)
         try {
-        const res = await fetch('/api/create/post/lost', {
+        const res = await fetch('/api/create/post/found', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -151,10 +149,10 @@ export default function CreateLostPostPage() {
   return (
     <div className={`flex xl:flex-row flex-col`}>
         <div className={`flex flex-col lg:justify-items-start w-full`}>
-            <h1 className={`${font1.className} lg:text-6xl text-3xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 m-2`}>Tell us what you lost</h1>
+            <h1 className={`${font1.className} lg:text-6xl text-3xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 m-2`}>Tell us what you found</h1>
             <form>
                 <div className='flex md:flex-row flex-col'>
-                    <input type='text' className={inputStyles()} placeholder='What was the item?' onChange={(e)=>{set_con_name(e.target.value)}} value={con_name}></input>
+                    <input type='text' className={inputStyles()} placeholder='What is it?' onChange={(e)=>{set_con_name(e.target.value)}} value={con_name}></input>
                     <SearchableDropdown onSelect={(val) => set_con_type(val)}/>
                 </div>
                 <div className="flex items-center space-x-4 m-2">
@@ -176,9 +174,8 @@ export default function CreateLostPostPage() {
                         onChange={handleUpload}
                     />
                 </div>
-
                 <div>
-                    <h1 className={`${font2.className} m-2 lg:text-2xl text-md`}>Add details of the lost item</h1>
+                    <h1 className={`${font2.className} m-2 lg:text-2xl text-md`}>Add details of the found item</h1>
                     <div className='flex flex-col'>
                         <div className='flex flex-row items-center'>
                             <label
@@ -186,7 +183,7 @@ export default function CreateLostPostPage() {
                                 style={{color: getComplementaryColor(con_color), backgroundColor: con_color }}
                                 className="cursor-pointer px-4 py-2 rounded-xl bg-black text-white font-semibold shadow transition m-2"
                             >
-                                What color was it?
+                                What color is it?
                                 
                             </label>
                             <input type='color' className='rounded-full w-10 h-10 border-none' placeholder='Choose color' onChange={(e)=>{set_con_color(e.target.value)}} value={con_color}></input>
@@ -196,15 +193,15 @@ export default function CreateLostPostPage() {
                     </div>
                 </div>
                 <div className='flex flex-col'>
-                    <h1 className={`${font2.className} m-2 lg:text-2xl text-md`}>When did you last see/use it?</h1>
+                    <h1 className={`${font2.className} m-2 lg:text-2xl text-md`}>When did you find it?</h1>
                     <div className='flex md:flex-row flex-col *:input-with-custom-placeholder'>
                             <select 
                             id="dropdown"
                             className={inputStyles()}
                             defaultValue={""}
-                            onChange={(e)=>{set_con_lastused_time(e.target.value)}}
+                            onChange={(e)=>{set_con_foundwhen_time(e.target.value)}}
                             >
-                                <option className={inputStyles()} value="" disabled>Probable time of the day when lost</option>
+                                <option className={inputStyles()} value="" disabled>When did you find it approximately?</option>
                                 <option className={inputStyles()} value="Morning">Morning (6:01 AM - 11:00 AM) </option>
                                 <option className={inputStyles()} value="Noon">Noon ( 11:01 AM - 3:00 PM )</option>
                                 <option className={inputStyles()} value="Afternoon">Afternoon ( 3:01 PM - 6:00 PM )</option>
@@ -213,9 +210,8 @@ export default function CreateLostPostPage() {
                                 <option className={inputStyles()} value="Midnight">Midnight ( 12:01 AM - 6:00 AM )</option>
                             </select>
 
-                        <input type='date' className={inputStyles()} placeholder='When did you last see it?' onChange={(e)=>{set_con_lastused_date(e.target.value)}} value={con_lastused_date} max={new Date().toISOString().split("T")[0]}></input>
+                        <input type='date' className={inputStyles()} placeholder='When did you last see it?' onChange={(e)=>{set_con_foundwhen_date(e.target.value)}} value={con_foundwhen_date} max={new Date().toISOString().split("T")[0]}></input>
                     </div>
-                    <input type='text' className={inputStyles()} placeholder='Declare a reward for the finder' onChange={(e)=>{set_con_reward(e.target.value)}}></input>
                 </div>
             </form>
             <div className='flex justify-center items-center h-fit w-full'>
@@ -226,8 +222,8 @@ export default function CreateLostPostPage() {
             
         </div>
         <div className={`flex flex-col xl:items-end lg:items-start w-full p-2`}>
-            <h1 className={`${font1.className} lg:text-4xl text-xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 pb-1 lg:mb-0 mb-2`}>Where could it probably be?</h1>
-            <MapPage  onSelect={(val) => {console.log('Received markers in parent:', val); set_con_location(val);}}/>
+            <h1 className={`${font1.className} lg:text-4xl text-xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 pb-1 lg:mb-0 mb-2`}>Where was it?</h1>
+            <MapPage2  onSelect={(val) => {console.log('Received markers in parent:', val); set_con_location(val);}}/>
         </div>
     </div>
   )

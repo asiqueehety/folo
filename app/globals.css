@@ -119,3 +119,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+.input-with-custom-placeholder::placeholder {
+  font-family: 'Abel', sans-serif;
+  font-weight: 400;
+}
+
+.input-with-custom-placeholder {
+  font-family: 'Abel', sans-serif;
+  font-weight: 400;
+}

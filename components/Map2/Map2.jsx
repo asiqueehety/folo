@@ -2,7 +2,7 @@
 
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import L from 'leaflet';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -15,9 +15,10 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow.src,
 });
 
-export default function MapPage({ onSelect }) {
+export default function MapPage2({ onSelect }) {
   const [userPosition, setUserPosition] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [undo_clicked, set_undo_clicked] = useState(false)
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -25,6 +26,7 @@ export default function MapPage({ onSelect }) {
           const coords = [pos.coords.latitude, pos.coords.longitude];
           setUserPosition(coords);
           setMarkers([{lat:pos.coords.latitude,lng:pos.coords.longitude}])
+          onSelect([{lat:pos.coords.latitude,lng:pos.coords.longitude}])
         },
         (err) => {
           alert('Geolocation error: ' + err.message);
@@ -38,7 +40,7 @@ export default function MapPage({ onSelect }) {
   function MarkerLayer() {
     useMapEvents({
       click(e) {
-        if (markers.length < 5) {
+        if (markers.length < 1) {
           const newMarkers = [...markers, e.latlng];
           setMarkers(newMarkers);
           onSelect(newMarkers); // now using updated array
@@ -50,7 +52,7 @@ export default function MapPage({ onSelect }) {
       <>
         {markers.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false}>
-            <Popup>{i==0? 'Your present location is the primary probable location': `Probable Location ${i + 1}`}</Popup>
+            <Popup>{i==0 && !undo_clicked? `This is your current location. Press 'Undo' if this is not where you found the item.`: `Found the item here`}</Popup>
           </Marker>
         ))}
       </>
@@ -61,7 +63,8 @@ export default function MapPage({ onSelect }) {
   }
   function undoClicked()
   {
-    if(markers.length>1)
+    set_undo_clicked(true);
+    if(markers.length>0)
     {
       setMarkers(prev => prev.slice(0,-1))
     }
@@ -81,7 +84,7 @@ export default function MapPage({ onSelect }) {
         />
         <MarkerLayer />
       </MapContainer>
-      <button className={`bg-gray-800 text-white p-2 m-1 text-sm rounded-2xl h-fit w-fit transition-all ${markers.length == 1? 'disabled opacity-20':''}`} onClick={()=>{undoClicked()}}>
+      <button className={`bg-gray-800 text-white p-2 m-1 text-sm rounded-2xl h-fit w-fit transition-all ${markers.length == 0? 'disabled opacity-20':''}`} onClick={()=>{undoClicked()}}>
         Undo
       </button>
     </div>

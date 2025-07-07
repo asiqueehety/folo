@@ -1,16 +1,18 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const foundPostSchema = new mongoose.Schema({
 
-    username:{type: String, required: true},
-    email:{type: String, required: true},
-    pw_hash:{type: String, required: true},
-    phone:{type: String, required: true},
-    address:{type: String, required: true},
-    role:{type: String, required: true},
-    
+    content_name:{type: String, required: true},
+    content_type:{type: String, required: true},
+    content_foundwhen:{type: Object, required: true},
+    content_details:{type: Object, required: true},
+    content_location:{type: [Object], required: true},
+    content_pic:{type: String, required: true},
+    finder_id:{type: String, required: true},
+
+
 },{timestamps:true})
 
-const User = mongoose.models.User || mongoose.model('User', userSchema);
+const FoundPost = mongoose.models.FoundPost || mongoose.model('FoundPost', foundPostSchema);
 
-export default User
+export default FoundPost
