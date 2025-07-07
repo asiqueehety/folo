@@ -42,7 +42,7 @@ export default function MapPage({ onSelect }) {
           const newMarkers = [...markers, e.latlng];
           setMarkers(newMarkers);
           onSelect(newMarkers); // now using updated array
-          console.log(markers)
+          console.log(newMarkers)
         }
       },
     });

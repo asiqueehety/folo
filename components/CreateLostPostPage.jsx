@@ -5,8 +5,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import SearchableDropdown from './reusables/SearchableDropdown'
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation'
 const MapPage = dynamic(() => import('@/components/Map'), { ssr: false });
-import jwt from 'jsonwebtoken';
 
 const font1 = Mulish(
 {
@@ -36,9 +36,7 @@ export default function CreateLostPostPage() {
   const [con_pic, set_con_pic] = useState('')
   const [con_loser_id, set_con_loser_id] = useState('')
   const [con_reward, set_con_reward] = useState('')
-  const [con, set_con] = useState({})
-  
-  const shapes = ["Circle","Rectangle","Square","Oval","Cylinder","Sphere","Triangle","Heart","Star","Hexagon"];
+  const router = useRouter();
 
   useEffect(() =>
   {
@@ -110,26 +108,38 @@ export default function CreateLostPostPage() {
         console.error("Upload failed:", err);
     }
     };
-
-    function submitClicked()
+    async function submitClicked()
     {
-        set_con
-        (
-            {
-                name: con_name,
-                type: con_type,
-                lastused: con_lastused,
-                details: con_details,
-                location:con_location,
-                pic: con_pic,
-                reward: con_reward,
-                loser_id: con_loser_id,             
-            }
-        )
-        console.log(con);
+        const con_data = 
+        {
+            content_name: con_name,
+            content_type: con_type,
+            content_lastused: con_lastused,
+            content_details: con_details,
+            content_location:con_location,
+            content_pic: con_pic,
+            loser_id: con_loser_id, 
+            finder_reward: con_reward,   
+        }
+        console.log(con_data)
+        try {
+        const res = await fetch('/api/create/post/lost', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(con_data),
+        });
+        const data = await res.json();
+        if (res.ok) {
+        router.push('/') // Redirect to homepage or dashboard
+        } else {
+        alert(data.error || 'Lost post creation failed')
+        }
+        } catch (err) {
+            console.error("Data send failed", err);
+        }
     }
-
-
   return (
     <div className={`flex xl:flex-row flex-col`}>
         <div className={`flex flex-col lg:justify-items-start w-full`}>
@@ -147,18 +157,6 @@ export default function CreateLostPostPage() {
                             <div className={`md:w-full h-fit max-w-md px-2 py-2 rounded-xl bg-white/80 backdrop-blur-md border border-gray-300 text-gray-800 placeholder-gray-500 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent duration-200 m-2 transition-all w-63`}>{!!con_color? con_color:'Choose color'}</div>
                             <input type='color' className='rounded-full w-10 h-10' placeholder='Choose color' onChange={(e)=>{set_con_color(e.target.value)}} value={con_color}></input>
                         </div>
-                        {/* <select 
-                        id="dropdown"
-                        className={inputStyles()}
-                        defaultValue={""}
-                        >
-                            <option value="" disabled>Choose shape</option>
-                            {shapes.map((shape, ind)=>
-                                (
-                                    <option key={ind} value={`${shape}`}>{shape}</option>
-                                )
-                            )}
-                        </select> */}
                         <input type='text' className={inputStyles()} placeholder='Specify model' onChange={(e)=>{set_con_model(e.target.value)}} value={con_model}></input>
                         <input type='text' className={inputStyles()} placeholder='Any special markings?' onChange={(e)=>{set_con_special(e.target.value)}} value={con_special}></input>
                     </div>
@@ -186,13 +184,13 @@ export default function CreateLostPostPage() {
                     <input type='text' className={inputStyles()} placeholder='Declare a reward for the finder' onChange={(e)=>{set_con_reward(e.target.value)}}></input>
                 </div>
             </form>
-            <button className={` ${!allOk()? 'opacity-25 disabled':'hover:bg-blue-600 hover:text-white'} px-6 py-2 border-2 border-blue-600 text-blue-600 rounded-full  transition`} onClick={submitClicked}>
+            <button className={` ${!allOk()? 'opacity-25 disabled':'hover:bg-blue-600 hover:text-white'} px-6 py-2 border-2 border-blue-600 text-blue-600 rounded-full  transition`} onClick={()=>{submitClicked()}}>
                 Submit
             </button>
         </div>
         <div className={`flex flex-col xl:items-end lg:items-start w-full p-2`}>
             <h1 className={`${font2.className} lg:text-4xl text-xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 pb-1 lg:mb-0 mb-2`}>Where could it probably be?</h1>
-            <MapPage  onSelect={(val) => set_con_location(val)}/>
+            <MapPage  onSelect={(val) => {console.log('Received markers in parent:', val); set_con_location(val);}}/>
         </div>
     </div>
   )

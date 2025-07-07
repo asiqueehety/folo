@@ -22,7 +22,6 @@ export default function Intro() {
   const router = useRouter()
   return (
     <div className={`${font1.className}`}>
-      <MapPage/>
     </div>
   )
 }
