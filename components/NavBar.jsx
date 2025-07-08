@@ -15,6 +15,11 @@ const font2 = Lato({
   subsets: ['latin'],
 })
 
+export function buttonStyles()
+{
+  return `h-fit w-full rounded-2xl bg-white text-blue-950 lg:text-xl text-sm max-w-50 lg:p-2 p-1 m-2 mb-1 border-none hover:bg-gradient-to-br from-purple-200 via-blue-200 to-red-100 hover:transition-all`
+}
+
 export default function NavBar() {
   const router = useRouter();
 
@@ -36,13 +41,13 @@ export default function NavBar() {
         <div className='xl:flex xl:flex-row h-fit hidden'>
           <button
             onClick={()=>{handleClick('/create/post/lost')}}
-            className='h-fit w-full rounded-2xl bg-white text-blue-950 lg:text-xl text-sm max-w-50 lg:p-2 p-1 m-2 mb-1 border-none'
+            className={buttonStyles()}
           >
             Lost something?
           </button>
           <button
             onClick={()=>{handleClick('/create/post/found')}}
-            className='h-fit w-full rounded-2xl bg-white text-blue-950 lg:text-xl text-sm max-w-50 lg:p-2 p-1 m-2 mb-1 border-none'
+            className={buttonStyles()}
           >
             Found something?
           </button>

@@ -59,7 +59,7 @@ export default function MapPage2({ onSelect }) {
     );
   }
   if (!userPosition) {
-    return <div className="text-center mt-10">Fetching location...</div>;
+    return <div></div>;
   }
   function undoClicked()
   {
