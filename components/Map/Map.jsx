@@ -7,6 +7,7 @@ import L from 'leaflet';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import MapLoading from './../reusables/MapLoading';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -57,7 +58,10 @@ export default function MapPage({ onSelect }) {
     );
   }
   if (!userPosition) {
-    return <div></div>;
+    return(
+    <div className='h-full w-full flex justify-center items-center'>
+      <MapLoading/>
+    </div>)
   }
   function undoClicked()
   {

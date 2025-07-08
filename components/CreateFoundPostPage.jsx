@@ -149,7 +149,7 @@ export default function CreateFoundPostPage() {
   return (
     <div className={`flex xl:flex-row flex-col`}>
         <div className={`flex flex-col lg:justify-items-start w-full`}>
-            <h1 className={`${font1.className} lg:text-6xl text-3xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 m-2`}>Tell us what you found</h1>
+            <h1 className={`${font1.className} lg:text-6xl text-3xl text-white backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 m-2 animated-gradient-bg-2`}>Tell us what you found</h1>
             <form>
                 <div className='flex md:flex-row flex-col'>
                     <input type='text' className={inputStyles()} placeholder='What is it?' onChange={(e)=>{set_con_name(e.target.value)}} value={con_name}></input>

@@ -130,7 +130,154 @@
   font-weight: 400;
 }
 
-@keyframes spin
-{
-  
+.animation_loadingMap {
+  width: 100px;
+  height: 100px;
+  border: none; /* added border width */
+  animation: 3s loadingMap ease-in-out infinite ;
 }
+
+
+@keyframes loadingMap
+{
+  0%
+  {
+    transform: rotateX(0) rotateY(0) rotateZ(0)
+  }
+  12.5%
+  {
+    background-color: brown;
+    border-radius: 50%;
+    transform: rotateX(180deg) rotateY(180deg) rotateZ(0)
+  }
+  25%
+  {
+    background-color: chocolate;
+    width: 100px;
+    height: 100px;
+    border-radius: 0%;
+    transform: rotateX(0deg) rotateY(180deg) rotateZ(180)
+  }
+  37.5%
+  {
+    background-color: darkmagenta;
+    border-radius: 50%;
+    transform: rotateX(180deg) rotateY(0deg) rotateZ(180)
+  }
+  50%
+  {
+    background-color:aquamarine;
+    width: 100px;
+    height: 100px;
+    border-radius: 0%;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0)
+  }
+  62.5%
+  {
+    background-color:aquamarine;
+    border-radius: 50%;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0)
+  }
+  75%
+  {
+    background-color:aquamarine;
+    width: 100px;
+    height: 100px;
+    border-radius: 0%;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0)
+  }
+  87.5%
+  {
+    background-color:aquamarine;
+    border-radius: 50%;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0)
+  }
+  100%
+  {
+    background-color:aquamarine;
+    width: 100px;
+    height: 100px;
+    border-radius: 0%;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0)
+  }
+}
+
+.animated-gradient-bg {
+  background: radial-gradient(circle, #50d6ff, #f4f4fe, #71e3da)/*linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1)*/;
+  background-size: 300% 300%;
+  animation: gradientMove 120s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+
+.animated-gradient-bg-2 {
+  background: radial-gradient(circle, #1e006a, #0032ba, #1001b496)/*linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1)*/;
+  background-size: 300% 300%;
+  animation: gradientMove 20s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 100% 100%;
+  }
+  25%
+  {
+    background-position: 0% 50%;  
+  }
+  50% {
+    background-position: 50% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
+
+
+.animated-gradient-bg-3 {
+  background: radial-gradient(circle, #4f4040, #3a1919, #4b0614)/*linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1)*/;
+  background-size: 300% 300%;
+  animation: gradientMove 5s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-bg-navbar {
+  background: linear-gradient(45deg, rgb(46, 52, 58), #2c2769, rgb(31, 31, 37), rgb(37, 45, 43));
+  background-size: 300% 300%;
+  animation: gradientMove 10s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+

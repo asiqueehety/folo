@@ -6,6 +6,7 @@ import {Lato, Outfit} from 'next/font/google'
 import {useRouter} from 'next/navigation'
 import {useState} from 'react'
 import MapPage from './Map'
+import MapLoading from './reusables/MapLoading'
 
 const font1 = Lato({
   weight:['900'],
@@ -22,6 +23,7 @@ export default function Intro() {
   const router = useRouter()
   return (
     <div className={`${font1.className}`}>
+      <MapLoading/>
     </div>
   )
 }
