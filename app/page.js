@@ -2,7 +2,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import HomePage from "@/components/HomePage";
+import HomePage from "@/components/HomePageComponents/HomePage";
 import Intro from "@/components/Intro";
 
 export default function Home() {

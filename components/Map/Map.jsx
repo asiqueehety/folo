@@ -16,9 +16,28 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow.src,
 });
 
+const pin = new L.Icon({
+  iconUrl: '/resources/pin.png',
+  iconSize: [40, 40],       // width, height
+  iconAnchor: [15, 40],     // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -35],    // point from which the popup should open relative to the iconAnchor
+  shadowSize: [40, 40],     // optional
+});
+
+const location = new L.Icon({
+  iconUrl: '/resources/target.png',
+  iconSize: [40, 40],       // width, height
+  iconAnchor: [15, 40],     // point of the icon which will correspond to marker's location
+  popupAnchor: [0, -35],    // point from which the popup should open relative to the iconAnchor
+  shadowSize: [40, 40],     // optional
+});
+
+
+
 export default function MapPage({ onSelect }) {
   const [userPosition, setUserPosition] = useState(null);
   const [markers, setMarkers] = useState([]);
+  const [undo_clicked, set_undo_clicked] = useState(false)
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -50,7 +69,7 @@ export default function MapPage({ onSelect }) {
     return (
       <>
         {markers.map((pos, i) => (
-          <Marker key={i} position={pos} draggable={false}>
+          <Marker key={i} position={pos} icon={i==0 && !undo_clicked? location:pin} draggable={false}>
             <Popup>{i==0? 'Your present location is the primary probable location': `Probable Location ${i + 1}`}</Popup>
           </Marker>
         ))}
@@ -65,7 +84,7 @@ export default function MapPage({ onSelect }) {
   }
   function undoClicked()
   {
-    if(markers.length>1)
+    if(markers.length>0)
     {
       setMarkers(prev => prev.slice(0,-1))
     }
@@ -82,10 +101,11 @@ export default function MapPage({ onSelect }) {
         <TileLayer
           attribution='<a href="https://asiqueehety.vercel.app" target="_blank">Asique Ehety</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          //url ={process.env.NEXT_PUBLIC_MAP_URL}
         />
         <MarkerLayer />
       </MapContainer>
-      <button className={`bg-gray-800 text-white p-2 m-1 text-sm rounded-2xl h-fit w-fit transition-all ${markers.length == 1? 'disabled opacity-20':''}`} onClick={()=>{undoClicked()}}>
+      <button className={`bg-gray-800 text-white p-2 m-1 text-sm rounded-2xl h-fit w-fit transition-all ${markers.length == 0? 'disabled opacity-20':''}`} onClick={()=>{undoClicked();set_undo_clicked(true)}}>
         Undo
       </button>
     </div>

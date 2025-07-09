@@ -81,6 +81,7 @@ export default function MapPage2({ onSelect }) {
         <TileLayer
           attribution='<a href="https://asiqueehety.vercel.app" target="_blank">Asique Ehety</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          //url ={process.env.NEXT_PUBLIC_MAP_URL}
         />
         <MarkerLayer />
       </MapContainer>
