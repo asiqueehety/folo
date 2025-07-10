@@ -66,8 +66,8 @@ export default function WelcomeContainer() {
       </p>
     </div> */}
 
-      <div className={`bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/20 shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-8 text-black font-sans m-2 mt-3 ${font1.className}`}>
-        <h2 className="text-5xl font-extrabold mb-6 tracking-wide">Welcome back, {user_name}</h2>
+      <div className={`bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/20 shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 text-black font-sans m-2 mt-1.5 ${font1.className}`}>
+        <h2 className="text-5xl font-extrabold mb-3 tracking-wide">Welcome back, {user_name}</h2>
         <p className="text-black/80 leading-relaxed">
           Let's find it all out.
         </p>

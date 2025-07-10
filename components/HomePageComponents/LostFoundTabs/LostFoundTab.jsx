@@ -22,7 +22,7 @@ export default function LostFoundTab(props) {
 
   return (
     <>
-      <div className={`bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/20 shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform p-1 text-black font-sans m-2 mt-3 ${font1.className} flex flex-row`}>
+      <div className={`bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/20 shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform p-1 py-0 text-black font-sans m-2 mt-1.5 ${font1.className} flex lg:flex-row flex-col`}>
         <LostTab posts={lost_posts} userPosition={props.userPosition}/>
         <FoundTab posts={found_posts} userPosition={props.userPosition}/>
       </div>

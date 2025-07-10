@@ -50,7 +50,7 @@ export default function FoundMiniCard(props) {
     // }, [post]);
   
   return (
-    <div className="w-full p-4 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col">
+    <div className="w-full p-4 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
         <div className='flex flex-row'>
             <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
             <div className='flex flex-col ml-2'>
@@ -70,7 +70,7 @@ export default function FoundMiniCard(props) {
                 View Details
             </button>
             <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors">
-                Claim found
+                Claim
             </button>
         </div>
         

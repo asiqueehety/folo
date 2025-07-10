@@ -50,7 +50,7 @@ export default function LostMiniCard(props) {
     // }, [post]);
   
   return (
-    <div className="w-full p-4 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col">
+    <div className="w-full p-4 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]   ">
         <div className='flex flex-row'>
             <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
             <div className='flex flex-col ml-2'>
@@ -60,16 +60,17 @@ export default function LostMiniCard(props) {
                     {placename ? `${placename.city}, ${placename.country}` : 'Loading location...'}
                 </p> */}
                 <p className="text-sm text-gray-300 mb-2">{distance} km away</p>
+                <p className="text-sm text-gray-300 mb-2 animated-gradient-bg-rewardBtn w-fit px-2 py-1 rounded-3xl">{post.finder_reward}</p>
             </div>
             <div>
 
             </div>
         </div>
         <div className='flex flex-row justify-between'>
-            <button className="mt-2 px-3 py-1 text-sm bg-white/50 rounded-full hover:bg-red-700 transition-colors">
+            <button className="mt-2 px-3 py-1 text-sm bg-red-200/70 rounded-full hover:bg-red-700 transition-colors">
                 View Details
             </button>
-            <button className="mt-2 px-3 py-1 text-sm bg-white/50 rounded-full hover:bg-red-700 transition-colors">
+            <button className="mt-2 px-3 py-1 text-sm bg-red-200/70 rounded-full hover:bg-red-700 transition-colors">
                 Claim found
             </button>
         </div>
