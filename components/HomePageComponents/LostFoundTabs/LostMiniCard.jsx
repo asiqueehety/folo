@@ -1,0 +1,70 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image'
+import avg_location from '../../../lib/avg_location'
+
+
+
+export default function LostMiniCard(props) {
+    const post = props.post
+
+    const [placename, setPlacename] = useState(null);
+
+    async function get_placename(lat, lng)
+    {
+        try {
+        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+        const data = await res.json();
+        const address = data.address;
+
+        const _country = address.country || '';
+        const _state = address.state || '';
+        const _city = address.city || address.town || address.village || '';
+        const _suburb = address.suburb || '';
+        const _postcode = address.postcode || '';
+        const _full = `${_suburb}, ${_city}, ${_state}, ${_country} - ${_postcode}`;
+        const place_name = {
+            country: _country,
+            state: _state,
+            city: _city,
+            suburb: _suburb,
+            postcode: _postcode
+        }
+        console.log(place_name)
+        return place_name;
+        } catch (err) {
+        console.error(err);
+        }
+    }
+
+    // useEffect(() => {
+    //   const getPlace = async () => {
+    //     const avgLoc = avg_location(post.content_location);
+    //     const name = await get_placename(avgLoc.lat, avgLoc.lng);
+    //     setPlacename(name);
+    //   };
+    //   getPlace();
+    // }, [post]);
+  
+  return (
+    <div className="w-full p-4 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col">
+        <div className='flex flex-row'>
+            <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
+            <div className='flex flex-col ml-2'>
+                <h3 className="text-lg font-semibold mb-1">{post.content_name}</h3>
+                <p className="text-sm text-gray-300 mb-2">{post.content_type}</p>
+                {/* <p className="text-sm text-gray-300 mb-2">
+                    {placename ? `${placename.city}, ${placename.country}` : 'Loading location...'}
+                </p> */}
+            </div>
+        </div>
+        <div>
+            <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors">
+                View Details
+            </button>
+        </div>
+        
+    </div>
+  )
+}

@@ -13,6 +13,7 @@ export default function FoundPopup(props) {
     const pic = props.post_pic
     const name = props.post_name
     const type = props.post_type
+    const distance = props.post_distance
 
   return (
 
@@ -26,6 +27,10 @@ export default function FoundPopup(props) {
       <p className="text-slate-300 text-2xl  p-1 rounded-xl h-fit w-full my-0 py-0">
         {name}
       </p>
+      <p className="text-sm  p-1 rounded-2xl h-fit w-full mx-auto flex justify-center">
+        {distance} km away
+      </p>
+    
     <div className='*:border-none *:h-fit *:w-fit *:p-2 *:bg-white/30 *:rounded-4xl flex flex-row justify-center items-center text-sm *:m-2 *:hover:bg-red-700 *:transition-all *:hover:text-white'>
         <button>
             Show details

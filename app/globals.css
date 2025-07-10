@@ -292,3 +292,39 @@
 .leaflet-popup-tip {
   background: rgba(30, 41, 59, 0.8) !important;
 }
+
+.animated-gradient-bg-losttab {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #ffffff00,rgba(255, 0, 0, 0.070), rgba(255, 255, 255, 0));
+  background-size: 300% 300%;
+  animation: gradientMove 10s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-bg-foundtab {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), #ffffff00,rgba(0, 0, 255, 0.050), rgba(255, 255, 255, 0));
+  background-size: 300% 300%;
+  animation: gradientMove 10s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

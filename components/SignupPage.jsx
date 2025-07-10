@@ -59,27 +59,43 @@ export default function SignupPage() {
     return !(uname === '' || email === '' || pw === '' || rpw === '' || phone === ''  || pw !== rpw || Object.keys(address).length ===0)
   }
 
-  async function locatePos()
-  {
-    if (!navigator.geolocation)
-    {
+  async function locatePos() {
+    if (!navigator.geolocation) {
       alert('Geolocation is not supported by your browser.');
       return;
     }
-
+  
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setaddress({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        });
-        console.log(address)
+      async (pos) => {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        
+  
+        try {
+          const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`);
+          const data = await res.json();
+          const address = data.address;
+  
+          const country = address.country || '';
+          const state = address.state || '';
+          const city = address.city || address.town || address.village || '';
+          const suburb = address.suburb || '';
+          const postcode = address.postcode || '';
+          const full = `${suburb}, ${city}, ${state}, ${country} - ${postcode}`;
+          setaddress({ lat, lng, country, state, city, suburb, postcode });
+          console.log('Detailed location:', full);
+          alert(`You are in ${full}`);
+        } catch (err) {
+          alert('Failed to reverse geocode location');
+          console.error(err);
+        }
       },
       (err) => {
         alert('Unable to retrieve your location. Error: ' + err.message);
       }
     );
   }
+  
 
 
   return (

@@ -215,7 +215,7 @@ export default function CreateLostPostPage() {
 
                         <input type='date' className={inputStyles()} placeholder='When did you last see it?' onChange={(e)=>{set_con_lastused_date(e.target.value)}} value={con_lastused_date} max={new Date().toISOString().split("T")[0]}></input>
                     </div>
-                    <input type='text' className={inputStyles()} placeholder='Declare a reward for the finder' onChange={(e)=>{set_con_reward(e.target.value)}}></input>
+                    <input type='number' className={inputStyles()} placeholder='Declare a reward for the finder' onChange={(e)=>{set_con_reward(e.target.value)}}></input>
                 </div>
             </form>
             <div className='flex justify-center items-center h-fit w-full'>

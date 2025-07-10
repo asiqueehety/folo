@@ -1,7 +1,7 @@
 'use client';
 
 import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, useMap } from 'react-leaflet';
 import { useEffect, useState } from 'react';
 import L from 'leaflet';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
@@ -10,6 +10,7 @@ import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 import MapLoading from './../../reusables/MapLoading';
 import LostPopup from './LostPopup';
 import FoundPopup from './FoundPopup';
+import getDistance from '../../../lib/get_distance';
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
@@ -41,18 +42,14 @@ const customIcon3 = new L.Icon({
   popupAnchor: [0, -35],    // point from which the popup should open relative to the iconAnchor
   shadowSize: [40, 40],     // optional
 });
-
-
-
-
-export default function MapContainerHome() {
+export default function MapContainerHome(props) {
   const [userPosition, setUserPosition] = useState(null);
+  const [userLocation, setUserLocation] = useState({});
   const [markers, setMarkers] = useState([]);
   const [lost_posts, set_lost_posts] = useState()
   const [found_posts, set_found_posts] = useState()
   const [lostlocs, set_lostlocs] = useState([])
   const [foundlocs, set_foundlocs] = useState([])
-
   function avg_location(arr)
   {
     let lat = 0
@@ -65,14 +62,13 @@ export default function MapContainerHome() {
     lng /= arr.length
     return {lat,lng}
   }
-
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
           const coords = [pos.coords.latitude, pos.coords.longitude];
           setUserPosition(coords);
+          setUserLocation({lat:pos.coords.latitude,lng:pos.coords.longitude});
           setMarkers([{lat:pos.coords.latitude,lng:pos.coords.longitude}])
         },
         (err) => {
@@ -85,58 +81,105 @@ export default function MapContainerHome() {
   }, []);
 
   useEffect(() => {
-    fetch('/api/get_all_posts',{
-      method:'GET',
-      headers:{
-        'Content-Type': 'application/json',
-      },
-    }).then(res => res.json()).then(data => {
-      set_lost_posts(data.lost_posts)
-      set_found_posts(data.found_posts)
-    })
-  }, []);
+    if (props.posts) {
+      set_lost_posts(props.posts.lost_posts)
+      set_found_posts(props.posts.found_posts)
+    }
+  }, [props.posts]);
 
   useEffect(() => {
+    if (
+      userPosition &&
+      Array.isArray(userPosition) &&
+      typeof userPosition[0] === 'number' &&
+      typeof userPosition[1] === 'number' &&
+      (lost_posts || found_posts)
+    ) {
+      setting_function_for_posts();
+    }
+  }, [userPosition, lost_posts, found_posts]);
+  
+  async function setting_function_for_posts() {
+
     if (found_posts) {
-      const foundLocs = found_posts.map(post => ({
-        lat: post.content_location[0].lat,
-        lng: post.content_location[0].lng,
-        post_id: post._id,
-        post_name: post.content_name,
-        post_type: post.content_type,
-        post_pic: post.content_pic
-      }));
+      const foundLocs = await Promise.all(
+        found_posts.map(async post => {
+          const _lat = post.content_location[0].lat;
+          const _lng = post.content_location[0].lng;
+          // const place_name = await get_placename(_lat, _lng);
+          const distance = getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: _lat, lng: _lng});
+          return {
+            lat: _lat,
+            lng: _lng,
+            post_id: post._id,
+            post_name: post.content_name,
+            post_type: post.content_type,
+            post_pic: post.content_pic,
+            distance: distance,
+          };
+        })
+      );
       set_foundlocs(foundLocs);
     }
-
+  
     if (lost_posts) {
-      const lostLocs = lost_posts.map(post => {
-        const avg_loc = avg_location(post.content_location);
-        return { 
-          lat: avg_loc.lat,
-          lng: avg_loc.lng,
-          post_id: post._id,
-          post_name: post.content_name,
-          post_type: post.content_type,
-          post_pic: post.content_pic,
-          post_reward: post.finder_reward
-        };
-      });
+      const lostLocs = await Promise.all(
+        lost_posts.map(async post => {
+          const avg_loc = avg_location(post.content_location);
+          // const place_name = await get_placename(avg_loc.lat, avg_loc.lng);
+          const distance = getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: avg_loc.lat, lng: avg_loc.lng});
+          return {
+            lat: avg_loc.lat,
+            lng: avg_loc.lng,
+            post_id: post._id,
+            post_name: post.content_name,
+            post_type: post.content_type,
+            post_pic: post.content_pic,
+            post_reward: post.finder_reward,
+            distance: distance,
+          };
+        })
+      );
       set_lostlocs(lostLocs);
     }
-  }, [lost_posts, found_posts]);
+  }
 
 
+  
+  // async function get_placename(lat, lng) {
+  //   try {
+  //     const res = await fetch(`/api/reverse-geocode?lat=${lat}&lon=${lng}`);
+  //     if (!res.ok) {
+  //       console.error('Failed to fetch place name',res);
+  //       console.log(res.status)
+  //       return null;
+  //     }
+  //     const data = await res.json();
+  //     const address = data.address || {};
+  
+  //     return {
+  //       country: address.country || '',
+  //       state: address.state || '',
+  //       city: address.city || address.town || address.village || '',
+  //       suburb: address.suburb || '',
+  //       postcode: address.postcode || '',
+  //     };
+  //   } catch (err) {
+  //     console.error(err);
+  //     return null;
+  //   }
+  // }
   function MarkerLayer() {
+    const map = useMap();
     useMapEvents({
-      click(e) {
-        if (markers.length < 1) {
-          const newMarkers = [...markers, e.latlng];
-          setMarkers(newMarkers); // now using updated array
-          console.log(newMarkers)
-        }
+      click() {
+        map.locate()
       },
-    });
+      locationfound(e) {
+        setUserPosition(e.latlng)
+        map.flyTo(e.latlng, 14.5)
+      },
+    })
     return (
       <>
         {markers.map((pos, i) => (
@@ -149,14 +192,14 @@ export default function MapContainerHome() {
         {foundlocs.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon2}>
             <Popup>
-              <FoundPopup post_name={pos.post_name} post_type={pos.post_type} post_pic={pos.post_pic}/>
+              <FoundPopup post_name={pos.post_name} post_type={pos.post_type} post_pic={pos.post_pic} post_distance={pos.distance}/>
             </Popup>
           </Marker>
         ))}
         {lostlocs.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon3}>
             <Popup>
-              <LostPopup post_name={pos.post_name} post_type={pos.post_type} post_pic={pos.post_pic} post_reward={pos.post_reward}/>
+              <LostPopup post_name={pos.post_name} post_type={pos.post_type} post_pic={pos.post_pic} post_reward={pos.post_reward} post_distance={pos.distance}/>
             </Popup>
           </Marker>
         ))}
@@ -164,7 +207,7 @@ export default function MapContainerHome() {
     );
   }
   if (!userPosition) {
-    return <div className='flex justify-center items-center'><MapLoading/></div>;
+    return <div className='flex m-auto'><MapLoading/></div>;
   }
   return (
     <div className={` h-fit w-fit lg:rounded-2xl rounded-xl flex lg:flex-row flex-col z-0 hover:scale-99 transition-all duration-500`}>
@@ -178,7 +221,6 @@ export default function MapContainerHome() {
           attribution='<a href="https://asiqueehety.vercel.app" target="_blank">Asique Ehety</a>'
           //url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           url={process.env.NEXT_PUBLIC_MAP_URL}
-
         />
         <MarkerLayer />
       </MapContainer>
