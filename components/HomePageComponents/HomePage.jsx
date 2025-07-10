@@ -10,6 +10,7 @@ import LostFoundTab from './LostFoundTabs/LostFoundTab';
 
 export default function HomePage() {
   const [_posts, set_posts] = useState({lost_posts:[],found_posts:[]})
+  const [userPosition, setUserPosition] = useState({})
   useEffect(() => {
     fetch('/api/get_all_posts',{
       method:'GET',
@@ -21,7 +22,21 @@ export default function HomePage() {
     })
   }, []);
   
-  
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const coords = {lat:pos.coords.latitude, lng:pos.coords.longitude};
+          setUserPosition(coords);
+        },
+        (err) => {
+          alert('Geolocation error: ' + err.message);
+        }
+      );
+    } else {
+      alert('Geolocation not supported.');
+    }
+  }, []);
 
   return (
     <div className='grid lg:grid-cols-[2fr_5fr]'>
@@ -29,7 +44,7 @@ export default function HomePage() {
         <WelcomeContainer/>
         <MapContainerHome posts={_posts}/>
       </div>
-      <LostFoundTab posts={_posts}/>
+      <LostFoundTab posts={_posts} userPosition={userPosition}/>
         
     </div>
 )

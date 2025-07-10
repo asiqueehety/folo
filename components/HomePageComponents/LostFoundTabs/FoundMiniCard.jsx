@@ -7,7 +7,7 @@ import getDistance from '../../../lib/get_distance'
 
 
 
-export default function LostMiniCard(props) {
+export default function FoundMiniCard(props) {
     const post = props.post
     const userPosition = props.userPosition
     const distance = getDistance(userPosition, avg_location(post.content_location))
@@ -66,10 +66,10 @@ export default function LostMiniCard(props) {
             </div>
         </div>
         <div className='flex flex-row justify-between'>
-            <button className="mt-2 px-3 py-1 text-sm bg-white/50 rounded-full hover:bg-red-700 transition-colors">
+            <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors">
                 View Details
             </button>
-            <button className="mt-2 px-3 py-1 text-sm bg-white/50 rounded-full hover:bg-red-700 transition-colors">
+            <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors">
                 Claim found
             </button>
         </div>
