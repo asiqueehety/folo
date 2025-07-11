@@ -28,13 +28,13 @@ export default function LostPopup(props) {
         {name}
       </p>
       <p className="text-sm  p-1 rounded-2xl h-fit w-full mx-auto flex justify-center">
-        {distance} km away
+        {`${distance < 1? `${(distance*1000)} m` : `${distance} km`} away`}
       </p>
     
     <div className="relative px-4 py-1 rounded-xl bg-[#0208a4] text-white shadow-md border border-white/10 overflow-hidden w-fit mx-auto">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-800 opacity-20 blur-sm animate-pulse z-0"></div>
         <div className="relative z-10 text-center text-sm font-medium leading-none">
-            <p className="opacity-90">{reward}</p>
+            <p className="opacity-90">$ {reward}</p>
         </div>
     </div>
     <div className='*:border-none *:h-fit *:w-fit *:p-2 *:bg-white/30 *:rounded-4xl flex flex-row justify-center items-center text-sm *:m-2 *:hover:bg-blue-700 *:transition-all *:hover:text-white'>

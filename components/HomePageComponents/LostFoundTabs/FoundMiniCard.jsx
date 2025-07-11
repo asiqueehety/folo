@@ -10,6 +10,7 @@ import getDistance from '../../../lib/get_distance'
 export default function FoundMiniCard(props) {
     const post = props.post
     const userPosition = props.userPosition
+    const ymdt_diff = props.ymdt_diff
     const distance = getDistance(userPosition, avg_location(post.content_location))
     // const [placename, setPlacename] = useState(null);
 
@@ -59,7 +60,8 @@ export default function FoundMiniCard(props) {
                 {/* <p className="text-sm text-gray-300 mb-2">
                     {placename ? `${placename.city}, ${placename.country}` : 'Loading location...'}
                 </p> */}
-                <p className="text-sm text-gray-300 mb-2">{distance} km away</p>
+                <p className="text-sm text-gray-300 mb-2">{`${distance < 1? `${(distance*1000)} m` : `${distance} km`} away`}</p>
+                <p className="text-xs text-gray-300 mb-2">Found {`${ymdt_diff.yeard? ymdt_diff.yeard+' years ' : ''}${ymdt_diff.monthd?ymdt_diff.monthd+' months ' : ''}${ymdt_diff.dated?ymdt_diff.dated+' days ' : ''}${ymdt_diff.hourd? ymdt_diff.hourd+' hours ' : ''}${ymdt_diff.minuted?ymdt_diff.minuted+' minutes ' : ''} ago`}</p>
             </div>
             <div>
 

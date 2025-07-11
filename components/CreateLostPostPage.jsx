@@ -213,9 +213,12 @@ export default function CreateLostPostPage() {
                                 <option className={inputStyles()} value="Midnight">Midnight ( 12:01 AM - 6:00 AM )</option>
                             </select>
 
-                        <input type='date' className={inputStyles()} placeholder='When did you last see it?' onChange={(e)=>{set_con_lastused_date(e.target.value)}} value={con_lastused_date} max={new Date().toISOString().split("T")[0]}></input>
+                        <input type='date' className={inputStyles()} placeholder='When did you last see it?' onChange={(e)=>{set_con_lastused_date(e.target.value)}} value={con_lastused_date} max={new Date().toISOString().split("T")[0]} required></input>
                     </div>
-                    <input type='number' className={inputStyles()} placeholder='Declare a reward for the finder' onChange={(e)=>{set_con_reward(e.target.value)}}></input>
+                    <div className='flex flex-row items-center'>
+                        <input type='number' className={inputStyles()} placeholder='Declare a reward for the finder' onChange={(e)=>{set_con_reward(e.target.value)}} value={con_reward} min={0} max={1000000} required></input>
+                        <h1 className='p-1 m-1 flex justify-center items-center text-md rounded-full bg-white text-black/70 px-3'>$</h1>
+                    </div>
                 </div>
             </form>
             <div className='flex justify-center items-center h-fit w-full'>

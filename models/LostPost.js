@@ -9,7 +9,7 @@ const lostPostSchema = new mongoose.Schema({
     content_location:{type: [Object], required: true},
     content_pic:{type: String, required: true},
     loser_id:{type: String, required: true},
-    finder_reward:{type: String, required: true},
+    finder_reward:{type: Number, required: true},
     
 },{timestamps:true})
 

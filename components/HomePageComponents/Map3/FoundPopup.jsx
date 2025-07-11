@@ -28,7 +28,7 @@ export default function FoundPopup(props) {
         {name}
       </p>
       <p className="text-sm  p-1 rounded-2xl h-fit w-full mx-auto flex justify-center">
-        {distance} km away
+        {`${distance < 1? `${(distance*1000)} m` : `${distance} km`} away`}
       </p>
     
     <div className='*:border-none *:h-fit *:w-fit *:p-2 *:bg-white/30 *:rounded-4xl flex flex-row justify-center items-center text-sm *:m-2 *:hover:bg-red-700 *:transition-all *:hover:text-white'>
