@@ -50,6 +50,7 @@ export default function MapContainerHome(props) {
   const [found_posts, set_found_posts] = useState()
   const [lostlocs, set_lostlocs] = useState([])
   const [foundlocs, set_foundlocs] = useState([])
+  const [darkmode,set_darkmode] = useState(false)
   function avg_location(arr)
   {
     let lat = 0
@@ -84,8 +85,9 @@ export default function MapContainerHome(props) {
     if (props.posts) {
       set_lost_posts(props.posts.lost_posts)
       set_found_posts(props.posts.found_posts)
+      set_darkmode(props.darkmode)
     }
-  }, [props.posts]);
+  }, [props.posts, props.darkmode]);
 
   useEffect(() => {
     if (
@@ -210,7 +212,7 @@ export default function MapContainerHome(props) {
     return <div className='flex m-auto'><MapLoading/></div>;
   }
   return (
-    <div className={` h-fit w-fit lg:rounded-2xl rounded-xl flex lg:flex-row flex-col z-0 hover:scale-99 transition-all duration-500`}>
+    <div className={` h-fit w-fit lg:rounded-2xl rounded-xl flex lg:flex-row flex-col z-0 hover:scale-99 transition-all duration-500 ${darkmode? 'bg-neutral-800' : 'bg-white'}`}>
       <MapContainer
         center={userPosition}
         zoom={14.5}
@@ -220,7 +222,7 @@ export default function MapContainerHome(props) {
         <TileLayer
           attribution='<a href="https://asiqueehety.vercel.app" target="_blank">Asique Ehety</a>'
           //url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          url={process.env.NEXT_PUBLIC_MAP_URL}
+          url={darkmode? process.env.NEXT_PUBLIC_MAP_URL_DARK : process.env.NEXT_PUBLIC_MAP_URL}
         />
         <MarkerLayer />
       </MapContainer>

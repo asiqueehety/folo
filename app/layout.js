@@ -1,8 +1,10 @@
+
 import DashboardPage from "@/components/DashboardPage";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
-import MapPage from "@/components/Map";
 import Background from "@/components/Background";
+import { DarkModeProvider } from "./context/DarkModeContext";
+import DarkModeToggle from "@/components/DarkModeToggle";
 
 export const metadata = {
   title: "FoLo - Found, lost and co.",
@@ -11,16 +13,20 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
 
-
   return (
-    <html lang="en">
-      <body>
-        <NavBar/>
-        <Background/>
-        <section className="pt-20"></section>
-        {children}
-      </body>
-
+    
+      <html lang="en"><DarkModeProvider>
+        <body>
+          <NavBar/>
+          <div className="fixed top-20 right-0 z-50">
+            <DashboardPage/>
+          </div>
+          <Background/>
+          <DarkModeToggle/>
+          <section className="pt-20"></section>
+          {children}
+        </body></DarkModeProvider>
     </html>
+    
   );
 }

@@ -7,6 +7,7 @@ import SearchableDropdown from './reusables/SearchableDropdown'
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation'
 import { getComplementaryColor } from '@/lib/complementaryColor'
+import { useDarkMode } from '@/app/context/DarkModeContext'
 
 const MapPage = dynamic(() => import('@/components/Map'), { ssr: false });
 
@@ -45,6 +46,7 @@ export default function CreateLostPostPage() {
   const [con_reward, set_con_reward] = useState('')
   const [selectedFile, setSelectedFile] = useState(null);
   const router = useRouter();
+  const { darkmode } = useDarkMode()
 
   useEffect(() =>
   {
@@ -149,9 +151,9 @@ export default function CreateLostPostPage() {
         }
     }
   return (
-    <div className={`flex xl:flex-row flex-col`}>
+    <div className={`flex xl:flex-row flex-col ${darkmode? 'text-white' : 'text-black'}`}>
         <div className={`flex flex-col lg:justify-items-start w-full`}>
-            <h1 className={`${font1.className} lg:text-6xl text-3xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 m-2 text-white animated-gradient-bg-3`}>Tell us what you lost</h1>
+            <h1 className={`${font1.className} lg:text-6xl text-3xl backdrop-blur-md rounded-4xl bg-blue-700/10 h-fit w-fit p-3 m-2 animated-gradient-bg-3 text-white`}>Tell us what you lost</h1>
             <form>
                 <div className='flex md:flex-row flex-col'>
                     <input type='text' className={inputStyles()} placeholder='What was the item?' onChange={(e)=>{set_con_name(e.target.value)}} value={con_name}></input>

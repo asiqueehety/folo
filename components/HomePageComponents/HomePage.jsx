@@ -8,9 +8,10 @@ import LostFoundTab from './LostFoundTabs/LostFoundTab';
 
 
 
-export default function HomePage() {
+export default function HomePage(props) {
   const [_posts, set_posts] = useState({lost_posts:[],found_posts:[]})
   const [userPosition, setUserPosition] = useState({})
+  const [darkmode,set_darkmode] = useState(props.darkmode)
   useEffect(() => {
     fetch('/api/get_all_posts',{
       method:'GET',
@@ -19,8 +20,9 @@ export default function HomePage() {
       },
     }).then(res => res.json()).then(data => {
       set_posts(data)
+      set_darkmode(props.darkmode)
     })
-  }, []);
+  }, [props.darkmode]);
   
   useEffect(() => {
     if (navigator.geolocation) {
@@ -41,10 +43,10 @@ export default function HomePage() {
   return (
     <div className='grid lg:grid-cols-[2fr_5fr]'>
       <div className='flex flex-col'>
-        <WelcomeContainer/>
-        <MapContainerHome posts={_posts}/>
+        <WelcomeContainer darkmode={darkmode}/>
+        <MapContainerHome posts={_posts} darkmode={darkmode}/>
       </div>
-      <LostFoundTab posts={_posts} userPosition={userPosition}/>
+      <LostFoundTab posts={_posts} userPosition={userPosition} darkmode={darkmode}/>
         
     </div>
 )

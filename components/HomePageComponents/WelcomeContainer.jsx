@@ -8,13 +8,15 @@ const font1 = Poppins({
   subsets:['latin']
 })
 
-export default function WelcomeContainer() {
+export default function WelcomeContainer(props) {
 
   const [user_name,set_user_name] = useState('')
+  const [darkmode,set_darkmode] = useState(false)
   const router = useRouter();
 
 
   useEffect(() => {
+    set_darkmode(props.darkmode)
     const token = localStorage.getItem('token');
     if (!token) return;
 
@@ -46,7 +48,7 @@ export default function WelcomeContainer() {
         .catch(err => {
         console.error('Error fetching user ID:', err);
         });
-    }, []);
+    }, [props.darkmode]);
 
   
 
@@ -66,9 +68,9 @@ export default function WelcomeContainer() {
       </p>
     </div> */}
 
-      <div className={`bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/20 shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 text-black font-sans m-2 mt-1.5 ${font1.className}`}>
+      <div className={`${darkmode? 'bg-neutral-800 border-none':'bg-white/10 backdrop-blur-md border-white/20'} rounded-3xl border-2  shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 ${darkmode? 'text-white' : 'text-black'} font-sans m-1 mt-1.5 ${font1.className}`}>
         <h2 className="text-5xl font-extrabold mb-3 tracking-wide">Welcome back, {user_name}</h2>
-        <p className="text-black/80 leading-relaxed">
+        <p className={`${darkmode? 'text-white/80' : 'text-black/80'} leading-relaxed`}>
           Let's find it all out.
         </p>
       </div>

@@ -52,9 +52,9 @@ export default function NavBar() {
             Found something?
           </button>
         </div>
-        <div>
+        {/* <div>
           <DashboardPage/>
-        </div>
+        </div> */}
       </nav>
     </div>
   )

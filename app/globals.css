@@ -221,6 +221,25 @@
 }
 
 
+.animated-gradient-bg-dark {
+  background: radial-gradient(circle, #000000, #050917, #0d0d13c5)/*linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1)*/;
+  background-size: 300% 300%;
+  animation: gradientMove 120s ease-in-out infinite;
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
 
 .animated-gradient-bg-2 {
   background: radial-gradient(circle, #1e006a, #0032ba, #1001b496)/*linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #1dd1a1)*/;
