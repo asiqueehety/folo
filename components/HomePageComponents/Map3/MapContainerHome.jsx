@@ -104,7 +104,6 @@ export default function MapContainerHome(props) {
   }, [userPosition, lost_posts, found_posts]);
   
   async function setting_function_for_posts() {
-
     if (found_posts) {
       const foundLocs = await Promise.all(
         found_posts.map(async post => {
@@ -185,14 +184,14 @@ export default function MapContainerHome(props) {
         {showPostLocations && showPostLocations.content_location.length==1 && showPostLocations.content_location.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon2}>
             <Popup>
-              <FoundPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: showPostLocations.content_location[0].lat, lng: showPostLocations.content_location[0].lng})}/>
+              <FoundPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: pos.lat, lng: pos.lng})}/>
             </Popup>
           </Marker>
-        ))}
+        ))} 
         {showPostLocations && showPostLocations.content_location.length > 1 && showPostLocations.content_location.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon3}>
             <Popup>
-              <LostPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_reward={showPostLocations.finder_reward} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: showPostLocations.content_location[i].lat, lng: showPostLocations.content_location[i].lng})}/>
+              <LostPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_reward={showPostLocations.finder_reward} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: pos.lat, lng: pos.lng})}/>
             </Popup>
           </Marker>
         ))}
