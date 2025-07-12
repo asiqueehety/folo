@@ -44,7 +44,6 @@ const customIcon3 = new L.Icon({
 });
 export default function MapContainerHome(props) {
   const [userPosition, setUserPosition] = useState(null);
-  const [userLocation, setUserLocation] = useState({});
   const [markers, setMarkers] = useState([]);
   const [lost_posts, set_lost_posts] = useState()
   const [found_posts, set_found_posts] = useState()
@@ -70,7 +69,6 @@ export default function MapContainerHome(props) {
         (pos) => {
           const coords = [pos.coords.latitude, pos.coords.longitude];
           setUserPosition(coords);
-          setUserLocation({lat:pos.coords.latitude,lng:pos.coords.longitude});
           setMarkers([{lat:pos.coords.latitude,lng:pos.coords.longitude}])
         },
         (err) => {
@@ -83,7 +81,7 @@ export default function MapContainerHome(props) {
   }, []);
 
   useEffect(() => {
-    if (props.posts) {
+    if (props.posts || props.showPostLocations) {
       set_lost_posts(props.posts.lost_posts)
       set_found_posts(props.posts.found_posts)
       set_darkmode(props.darkmode)
@@ -97,11 +95,11 @@ export default function MapContainerHome(props) {
       Array.isArray(userPosition) &&
       typeof userPosition[0] === 'number' &&
       typeof userPosition[1] === 'number' &&
-      (lost_posts || found_posts)
+      (lost_posts || found_posts || showPostLocations)
     ) {
       setting_function_for_posts();
     }
-  }, [userPosition, lost_posts, found_posts]);
+  }, [userPosition, lost_posts, found_posts, showPostLocations]);
   
   async function setting_function_for_posts() {
     if (found_posts) {
@@ -154,8 +152,12 @@ export default function MapContainerHome(props) {
         map.locate()
       },
       locationfound(e) {
-        setUserPosition(e.latlng)
-        map.flyTo(!showPostLocations? e.latlng : [avg_location(showPostLocations.content_location).lat, avg_location(showPostLocations.content_location).lng], !!showPostLocations? 16 : 14.5)
+        const past_loc = userPosition
+        console.log(past_loc == userPosition)
+        setUserPosition([e.latlng.lat, e.latlng.lng])
+        map.flyTo(!showPostLocations? e.latlng : avg_location(showPostLocations.content_location), !!showPostLocations? 16 : 14.5)
+        
+        {showPostLocations && console.log(showPostLocations.content_location)}
       },
     })
     return (
@@ -174,6 +176,15 @@ export default function MapContainerHome(props) {
             </Popup>
           </Marker>
         ))}
+        {showPostLocations && showPostLocations.content_location.length==1 && showPostLocations.content_location.map((pos, i) => (
+          <Marker key={i} position={pos} draggable={false} icon={customIcon2}>
+            <Popup>
+              {!!getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: pos.lat, lng: pos.lng})
+              && <FoundPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: pos.lat, lng: pos.lng})}/>}
+            </Popup>
+          </Marker>
+        ))}
+
         {!showPostLocations && lostlocs.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon3}>
             <Popup>
@@ -181,13 +192,6 @@ export default function MapContainerHome(props) {
             </Popup>
           </Marker>
         ))}
-        {showPostLocations && showPostLocations.content_location.length==1 && showPostLocations.content_location.map((pos, i) => (
-          <Marker key={i} position={pos} draggable={false} icon={customIcon2}>
-            <Popup>
-              <FoundPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: pos.lat, lng: pos.lng})}/>
-            </Popup>
-          </Marker>
-        ))} 
         {showPostLocations && showPostLocations.content_location.length > 1 && showPostLocations.content_location.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon3}>
             <Popup>
