@@ -24,6 +24,12 @@ export default function LostTab(props) {
         set_darkmode(props.darkmode)
     }, [props.posts, props.userPosition, props.darkmode])
 
+    useEffect(() => {
+        if (typeof props.onShowDetails !== 'function') {
+          console.warn("onShowDetails is missing or not a function in LostTab");
+        }
+      }, [props.onShowDetails]);
+      
 
 
 function sort_by_distance(userPosition, posts) {
@@ -69,10 +75,10 @@ const button_style = "px-4 py-1 text-sm font-medium text-white rounded-full shad
             <button className={`${button_style} ${reward_sort ? 'bg-red-700' : ' bg-emerald-800'}`} onClick={() => {sort_by_reward(posts);set_reward_sort(true);set_distance_sort(false);set_date_sort(false);}}>Reward</button>
             <button className={`${button_style} ${date_sort ? 'bg-red-700' : ' bg-emerald-800'}`} onClick={() => {sort_by_date(posts);set_date_sort(true);set_distance_sort(false);set_reward_sort(false);}}>Losing date</button>
         </div>
-        <div className=" rounded-3xl h-143.5 overflow-y-auto">
+        <div className=" rounded-3xl h-145.5 overflow-y-auto">
         {
             posts && Array.isArray(posts) && posts.map((post,index) => (
-                <LostMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_lastused)}/>
+                <LostMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_lastused)} onShowDetails={props.onShowDetails}/>
             ))
         }
         </div>

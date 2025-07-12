@@ -51,6 +51,7 @@ export default function MapContainerHome(props) {
   const [lostlocs, set_lostlocs] = useState([])
   const [foundlocs, set_foundlocs] = useState([])
   const [darkmode,set_darkmode] = useState(false)
+  const [showPostLocations, setShowPostLocations] = useState(false)
   function avg_location(arr)
   {
     let lat = 0
@@ -86,8 +87,9 @@ export default function MapContainerHome(props) {
       set_lost_posts(props.posts.lost_posts)
       set_found_posts(props.posts.found_posts)
       set_darkmode(props.darkmode)
+      setShowPostLocations(props.showPostLocations)
     }
-  }, [props.posts, props.darkmode]);
+  }, [props.posts, props.darkmode, props.showPostLocations]);
 
   useEffect(() => {
     if (
@@ -146,31 +148,6 @@ export default function MapContainerHome(props) {
     }
   }
 
-
-  
-  // async function get_placename(lat, lng) {
-  //   try {
-  //     const res = await fetch(`/api/reverse-geocode?lat=${lat}&lon=${lng}`);
-  //     if (!res.ok) {
-  //       console.error('Failed to fetch place name',res);
-  //       console.log(res.status)
-  //       return null;
-  //     }
-  //     const data = await res.json();
-  //     const address = data.address || {};
-  
-  //     return {
-  //       country: address.country || '',
-  //       state: address.state || '',
-  //       city: address.city || address.town || address.village || '',
-  //       suburb: address.suburb || '',
-  //       postcode: address.postcode || '',
-  //     };
-  //   } catch (err) {
-  //     console.error(err);
-  //     return null;
-  //   }
-  // }
   function MarkerLayer() {
     const map = useMap();
     useMapEvents({
@@ -179,7 +156,7 @@ export default function MapContainerHome(props) {
       },
       locationfound(e) {
         setUserPosition(e.latlng)
-        map.flyTo(e.latlng, 14.5)
+        map.flyTo(!showPostLocations? e.latlng : [avg_location(showPostLocations.content_location).lat, avg_location(showPostLocations.content_location).lng], !!showPostLocations? 16 : 14.5)
       },
     })
     return (
@@ -191,17 +168,31 @@ export default function MapContainerHome(props) {
             </Popup>
           </Marker>
         ))}
-        {foundlocs.map((pos, i) => (
+        {!showPostLocations && foundlocs.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon2}>
             <Popup>
               <FoundPopup post_name={pos.post_name} post_type={pos.post_type} post_pic={pos.post_pic} post_distance={pos.distance}/>
             </Popup>
           </Marker>
         ))}
-        {lostlocs.map((pos, i) => (
+        {!showPostLocations && lostlocs.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={customIcon3}>
             <Popup>
               <LostPopup post_name={pos.post_name} post_type={pos.post_type} post_pic={pos.post_pic} post_reward={pos.post_reward} post_distance={pos.distance}/>
+            </Popup>
+          </Marker>
+        ))}
+        {showPostLocations && showPostLocations.content_location.length==1 && showPostLocations.content_location.map((pos, i) => (
+          <Marker key={i} position={pos} draggable={false} icon={customIcon2}>
+            <Popup>
+              <FoundPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: showPostLocations.content_location[0].lat, lng: showPostLocations.content_location[0].lng})}/>
+            </Popup>
+          </Marker>
+        ))}
+        {showPostLocations && showPostLocations.content_location.length > 1 && showPostLocations.content_location.map((pos, i) => (
+          <Marker key={i} position={pos} draggable={false} icon={customIcon3}>
+            <Popup>
+              <LostPopup post_name={showPostLocations.content_name} post_type={showPostLocations.content_type} post_pic={showPostLocations.content_pic} post_reward={showPostLocations.finder_reward} post_distance={getDistance({lat: userPosition[0], lng: userPosition[1]}, {lat: showPostLocations.content_location[i].lat, lng: showPostLocations.content_location[i].lng})}/>
             </Popup>
           </Marker>
         ))}
@@ -214,8 +205,8 @@ export default function MapContainerHome(props) {
   return (
     <div className={` h-fit w-fit lg:rounded-2xl rounded-xl flex lg:flex-row flex-col z-0 hover:scale-99 transition-all duration-500 ${darkmode? 'bg-neutral-800' : 'bg-white'}`}>
       <MapContainer
-        center={userPosition}
-        zoom={14.5}
+        center={!!showPostLocations? [avg_location(showPostLocations.content_location).lat, avg_location(showPostLocations.content_location).lng] : userPosition}
+        zoom={!!showPostLocations? 17 : 14.5}
         scrollWheelZoom={true}
         className="lg:rounded-4xl rounded-2xl md:w-180 sm:w-88 w-75 lg:h-140 h-90 lg:shadow-stone-700 lg:shadow-lg shadow-none lg:m-2 m-0"
       >
