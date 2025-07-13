@@ -5,16 +5,17 @@ import getDistance from '../../../lib/get_distance'
 import {useState} from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getComplementaryColor } from '../../../lib/complementaryColor'
+import edit from '../../../public/resources/edit.png'
+import dlt from '../../../public/resources/delete.png'
 
 
 
 
 export default function LostMiniCard(props) {
     const post = props.post
-    const onShowDetails = props.onShowDetails
     const userPosition = props.userPosition
     const ymdt_diff = props.ymdt_diff
-    const distance = getDistance(userPosition, avg_location(post.content_location)) 
+    const distance = getDistance(props.userPosition, avg_location(post.content_location))
     const [show_details, set_show_details] = useState(false)
     const [map_click_tip, set_map_click_tip] = useState(false)
     function formatDate(input) {
@@ -23,10 +24,21 @@ export default function LostMiniCard(props) {
         return date.toLocaleDateString('en-US', options);
     }
 
+  function editClicked() {
+    console.log('edit clicked lost')
+  }
 
+  function deleteClicked() {
+    console.log('delete clicked lost')
+  }
 
   return (
     <div className="w-full p-3 bg-neutral-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
+        <div className='flex flex-row justify-between'>
+            <Image src={edit} alt='EDIT' width={30} height={30} className="object-cover p-1 hover:scale-110 transition-all duration-300 m-1 mt-0 pt-0" onClick={editClicked}/>
+            <Image src={dlt} alt='DELETE ' width={30} height={30} className="object-cover p-1 hover:scale-110 transition-all duration-300 m-1 mt-0 pt-0" onClick={deleteClicked}/>
+            
+        </div>
         <div className='flex flex-row'>
             <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
             <div className='flex flex-col ml-2'>
@@ -41,7 +53,7 @@ export default function LostMiniCard(props) {
         </div>
         <div className='flex flex-row justify-between'>
             <button className="mt-2 px-3 py-1 text-sm bg-black/60 rounded-full hover:bg-red-700 transition-colors"
-            onClick={() => {set_show_details(!show_details);onShowDetails(null);set_map_click_tip(false);}}
+            onClick={() => {set_show_details(!show_details);set_map_click_tip(false);}}
             >
                 {show_details? 'Hide Details' : 'View Details'}
             </button>
@@ -74,12 +86,7 @@ export default function LostMiniCard(props) {
                 <div className='font-semibold text-xs'>Locations to search</div>
                 <button className='backdrop-blur-md border border-cyan/20 rounded-2xl shadow-lg text-md p-1 w-fit animated-gradient-bg-losttab hover:scale-98'
                 onClick={() => {
-                    if (typeof onShowDetails === 'function') {
-                      onShowDetails(post);
-                      set_map_click_tip(true);
-                    } else {
-                      console.error("onShowDetails is not a function", onShowDetails);
-                    }
+                    set_map_click_tip(true);
                 }}
                 >
                     Show on map

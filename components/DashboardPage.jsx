@@ -63,7 +63,7 @@ export default function DashboardPage() {
               <button onClick={()=>{buttonClicked('/')}} className='hover:bg-blue-500 hover:text-blue-50 h-full w-full p-3 transition-all'><h1 className='bg-blue-500 p-2 w-full rounded-xl'>Home</h1></button>
               <button onClick={()=>{buttonClicked('/')}} className='hover:bg-blue-500 hover:text-blue-50 h-full w-full p-3 transition-all'><h1 className='bg-blue-500 p-2 w-full rounded-xl'>Found items around you</h1></button>
               <button onClick={()=>{buttonClicked('/')}} className='hover:bg-blue-500 hover:text-blue-50 h-full w-full p-3 transition-all'><h1 className='bg-blue-500 p-2 w-full rounded-xl'>Lost items around you</h1></button>
-              <button onClick={()=>{buttonClicked('/')}} className='hover:bg-blue-500 hover:text-blue-50 h-full w-full p-3 transition-all'><h1 className='bg-blue-500 p-2 w-full rounded-xl'>Profile</h1></button>
+              <button onClick={()=>{buttonClicked('/profile')}} className='hover:bg-blue-500 hover:text-blue-50 h-full w-full p-3 transition-all'><h1 className='bg-blue-500 p-2 w-full rounded-xl'>Profile</h1></button>
               <button onClick={()=>{buttonClicked('/create/post/lost')}} className='hover:bg-blue-500 hover:text-blue-50 h-full w-full p-3 transition-all'><h1 className='bg-blue-500 p-2 w-full rounded-xl'>Lost something?</h1></button>
               <button onClick={()=>{buttonClicked('/create/post/found')}} className='hover:bg-blue-500 hover:text-blue-50 h-full w-full p-3 transition-all'><h1 className='bg-blue-500 p-2 w-full rounded-xl'>Found something?</h1></button>
               

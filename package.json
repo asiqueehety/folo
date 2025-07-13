@@ -16,6 +16,7 @@
     "framer-motion": "^12.23.0",
     "jsonwebtoken": "^9.0.2",
     "leaflet": "^1.9.4",
+    "lucide-react": "^0.525.0",
     "mongoose": "^8.16.1",
     "motion": "^12.23.0",
     "multer": "^2.0.1",

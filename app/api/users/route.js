@@ -1,4 +1,11 @@
-export async function GET(request) {}
+import { NextResponse } from 'next/server'
+import connectDB from '@/lib/mongoose'
+
+export async function GET(request) {
+    await connectDB()
+    
+    return NextResponse.json(user);
+}
  
 export async function HEAD(request) {}
  
