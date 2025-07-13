@@ -12,12 +12,12 @@ const font1 = Poppins({
 export default function LostFoundTab(props) {
   const [lost_posts, set_lost_posts] = useState([])
   const [found_posts, set_found_posts] = useState([])
-  const [userPosition, setUserPosition] = useState(null)
+  const [userPosition, setUserPosition] = useState([])
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
-          const coords = {lat:pos.coords.latitude, lng:pos.coords.longitude};
+          const coords = [pos.coords.latitude, pos.coords.longitude];
           setUserPosition(coords);
         },
         (err) => {

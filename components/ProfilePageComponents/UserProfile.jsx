@@ -2,6 +2,7 @@
 import React, {useEffect, useState} from 'react'
 import { Poppins } from 'next/font/google'
 import { UserCircle, Mail, Phone, MapPin, CalendarDays, Edit , Settings } from 'lucide-react'
+import MapLoading from '../reusables/MapLoading'
 
 const font1 = Poppins({
   weight:['400'],
@@ -16,7 +17,7 @@ export default function UserProfile(props) {
         setUser(props.user)
     }, [props.user])
 
-    if (!user) return <div>Loading...</div>
+    if (!user) return <div className='flex justify-center items-center h-full'><MapLoading/></div>
 
     return (
         <div className={`p-4 rounded-3xl border-2 shadow-xl hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] ${props.darkmode ? 'bg-gradient-to-br from-neutral-900 to-neutral-700 border-none text-white' : 'bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md border-white/20 text-black'} ${font1.className}`}>

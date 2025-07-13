@@ -7,16 +7,14 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { getComplementaryColor } from '../../../lib/complementaryColor'
 import edit from '../../../public/resources/edit.png'
 import dlt from '../../../public/resources/delete.png'
-
-
-
+import dynamic from 'next/dynamic';
+const MapContainerProfileCards = dynamic(() => import ('@/components/ProfilePageComponents/LostFoundTabs/Map4/MapContainerProfileCards'), { ssr: false });
 
 export default function FoundMiniCard(props) {
-    const post = props.post
-    const userPosition = props.userPosition
+    const [userPosition, set_userPosition] = useState([])
     const ymdt_diff = props.ymdt_diff
-    const distance = getDistance(userPosition, avg_location(post.content_location))
-
+    const [distance, set_distance] = useState()
+    const [post, set_post] = useState(null)
     const [show_details, set_show_details] = useState(false)
     const [map_click_tip, set_map_click_tip] = useState(false)
     function formatDate(input) {
@@ -25,6 +23,21 @@ export default function FoundMiniCard(props) {
         return date.toLocaleDateString('en-US', options);
     }
 
+
+
+
+    useEffect(() => {
+        set_post(props.post)
+        set_userPosition(props.userPosition)
+    }, [props.post, props.userPosition])
+
+  useEffect(() => {
+    set_userPosition(props.userPosition)
+    if (post?.content_location && post.content_location.length > 0) {
+        set_distance(getDistance({lat: userPosition[0], lng: userPosition[1]}, avg_location(post.content_location)))
+    }
+  }, [post, userPosition])
+
   function editClicked() {
     console.log('edit clicked')
   }
@@ -32,7 +45,7 @@ export default function FoundMiniCard(props) {
   function deleteClicked() {
     console.log('delete clicked')
   }
-
+  if (!post) return null;
   return (
     <>
     <div className="w-full p-3 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
@@ -49,7 +62,7 @@ export default function FoundMiniCard(props) {
                 {/* <p className="text-sm text-gray-300 mb-2">
                     {placename ? `${placename.city}, ${placename.country}` : 'Loading location...'}
                 </p> */}
-                <p className="text-sm text-gray-300 mb-2">{`${distance < 1? `${(distance*1000)} m` : `${distance} km`} away`}</p>
+                <p className="text-sm text-gray-300 mb-2">{`${distance && distance < 1? `${(distance*1000)} m` : distance && `${distance} km`} away`}</p>
                 <p className="text-xs text-gray-300 mb-2">Found {`${ymdt_diff.yeard? ymdt_diff.yeard+' years ' : ''}${ymdt_diff.monthd?ymdt_diff.monthd+' months ' : ''}${ymdt_diff.dated?ymdt_diff.dated+' days ' : ''}${ymdt_diff.hourd && !ymdt_diff.monthd ? ymdt_diff.hourd+' hours ' : ''}${ymdt_diff.minuted && !ymdt_diff.dated?ymdt_diff.minuted+' minutes ' : ''} ago`}</p>
             </div>
         </div>
@@ -86,21 +99,31 @@ export default function FoundMiniCard(props) {
                 <div className='font-semibold text-xs'>Location found in</div>
                 <button className='backdrop-blur-md border border-cyan/20 rounded-2xl shadow-lg text-md p-1 w-fit animated-gradient-bg-foundtab hover:scale-98'
                 onClick={() => {
-                    set_map_click_tip(true);
+                    set_map_click_tip(!map_click_tip);
                 }}
                 >
-                    Show on map
+                    {map_click_tip? 'Hide map' : 'Show on map'}
                 </button>
-                {map_click_tip && <p className='text-xs text-gray-300 mb-2'>Click on the map to focus on the location</p>}
+                {map_click_tip && (<>
+                <p className='text-xs text-gray-300 mb-2'>Click on the map to focus on the location</p>
+                </>)}
             </div>
-            
-            <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors">
-                Claim
-            </button>
-            
         </motion.div>
         )}
         </AnimatePresence>
+        <AnimatePresence>
+            {map_click_tip && (
+                <motion.div
+                initial={{opacity:0, height:0}}
+                animate={{ opacity:1, height:'auto'}}
+                exit={{ opacity:0, height:0}}
+                transition={{ duration: 0.3 }}
+                >
+                    <MapContainerProfileCards post={post} userPosition={userPosition} darkmode={props.darkmode} lo_fo={false}/>
+                </motion.div>
+            )}
+        </AnimatePresence>
+
     </div>
     </>
   )

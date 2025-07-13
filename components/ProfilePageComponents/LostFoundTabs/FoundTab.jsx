@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Inter, Poppins} from 'next/font/google'
+import {Poppins} from 'next/font/google'
 import FoundMiniCard from './FoundMiniCard'
 import getDistance from './../../../lib/get_distance';
 import get_time_diff from './../../../lib/get_time_diff';
@@ -13,7 +13,7 @@ const font1 = Poppins({
 export default function FoundTab(props) {
 
     const [posts, set_posts] = useState(props.posts)
-    const [userPosition, set_userPosition] = useState(props.userPosition)
+    const [userPosition, set_userPosition] = useState([])
     const [distance_sort, set_distance_sort] = useState(false)
     const [date_sort, set_date_sort] = useState(false)
     const [darkmode,set_darkmode] = useState(false)
@@ -24,12 +24,7 @@ export default function FoundTab(props) {
         set_darkmode(props.darkmode)
     }, [props.posts, props.userPosition, props.darkmode])
 
-    useEffect(() => {
-        if (typeof props.onShowDetails !== 'function') {
-          console.warn("onShowDetails is missing or not a function in FoundTab");
-        }
-      }, [props.onShowDetails]);
-      
+
 
 function sort_by_distance(userPosition, posts) {
 
@@ -65,7 +60,7 @@ const button_style = "px-4 py-1 text-sm font-medium text-white  rounded-full sha
         <div className=" rounded-3xl h-140.5 overflow-y-auto">
         {
             posts && Array.isArray(posts) && posts.map((post,index) => (
-                <FoundMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_foundwhen)}/>
+                <FoundMiniCard key={index} post={post} userPosition={userPosition} ymdt_diff={get_time_diff(post.content_foundwhen)}/>
             ))
         }
         </div>

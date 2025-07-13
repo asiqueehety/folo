@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Inter, Poppins} from 'next/font/google'
+import {Poppins} from 'next/font/google'
 import LostMiniCard from './LostMiniCard'
 import avg_location from './../../../lib/avg_location';
 import getDistance from './../../../lib/get_distance';
@@ -13,7 +13,7 @@ const font1 = Poppins({
 export default function LostTab(props) {
 
     const [posts, set_posts] = useState(props.posts)
-    const [userPosition, set_userPosition] = useState(props.userPosition)
+    const [userPosition, set_userPosition] = useState([])
     const [distance_sort, set_distance_sort] = useState(false)
     const [reward_sort, set_reward_sort] = useState(false)
     const [date_sort, set_date_sort] = useState(false)
@@ -23,13 +23,6 @@ export default function LostTab(props) {
         set_userPosition(props.userPosition)
         set_darkmode(props.darkmode)
     }, [props.posts, props.userPosition, props.darkmode])
-
-    useEffect(() => {
-        if (typeof props.onShowDetails !== 'function') {
-          console.warn("onShowDetails is missing or not a function in LostTab");
-        }
-      }, [props.onShowDetails]);
-      
 
 
 function sort_by_distance(userPosition, posts) {
