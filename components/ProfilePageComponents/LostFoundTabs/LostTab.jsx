@@ -71,7 +71,7 @@ const button_style = "px-4 py-1 text-sm font-medium text-white rounded-full shad
         <div className=" rounded-3xl h-140.5 overflow-y-auto">
         {
             posts && Array.isArray(posts) && posts.map((post,index) => (
-                <LostMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_lastused)} />
+                <LostMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_lastused)} darkmode={darkmode}/>
             ))
         }
         </div>

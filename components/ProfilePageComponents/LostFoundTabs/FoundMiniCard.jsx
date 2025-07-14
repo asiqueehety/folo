@@ -17,6 +17,7 @@ export default function FoundMiniCard(props) {
     const [post, set_post] = useState(null)
     const [show_details, set_show_details] = useState(false)
     const [map_click_tip, set_map_click_tip] = useState(false)
+    const [darkmode, set_darkmode] = useState(false)
     function formatDate(input) {
         const date = new Date(input);
         const options = { year: 'numeric', month: 'long', day: '2-digit' };
@@ -29,7 +30,8 @@ export default function FoundMiniCard(props) {
     useEffect(() => {
         set_post(props.post)
         set_userPosition(props.userPosition)
-    }, [props.post, props.userPosition])
+        set_darkmode(props.darkmode)
+    }, [props.post, props.userPosition, props.darkmode])
 
   useEffect(() => {
     set_userPosition(props.userPosition)
@@ -119,7 +121,7 @@ export default function FoundMiniCard(props) {
                 exit={{ opacity:0, height:0}}
                 transition={{ duration: 0.3 }}
                 >
-                    <MapContainerProfileCards post={post} userPosition={userPosition} darkmode={props.darkmode} lo_fo={false}/>
+                    <MapContainerProfileCards post={post} userPosition={userPosition} darkmode={darkmode} lo_fo={false}/>
                 </motion.div>
             )}
         </AnimatePresence>

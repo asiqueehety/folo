@@ -51,6 +51,7 @@ export default function MapContainerProfileCards(props) {
     set_darkmode(props.darkmode)
     set_lo_fo(props.lo_fo)
     set_userPosition(props.userPosition)
+    console.log('dark',props.darkmode)
   }, [props.post, props.darkmode, props.userPosition, props.lo_fo]);
 
   function MarkerLayer() {
@@ -78,7 +79,7 @@ export default function MapContainerProfileCards(props) {
         {post && post.content_location.map((pos, i) => (
           <Marker key={i} position={pos} draggable={false} icon={lo_fo? customIcon3:customIcon2}>
             <Popup>
-              Lost item position
+              Lost item position - {`${i+1}`}
             </Popup>
           </Marker>
         ))}
