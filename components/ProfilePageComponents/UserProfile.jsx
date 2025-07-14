@@ -21,8 +21,8 @@ export default function UserProfile(props) {
 
     return (
         <div className='flex flex-col gap-4'>
-            <h1 className={`${font1.className} text-2xl font-bold`}>Profile</h1>
-            <div className={`p-4 rounded-3xl border-2 shadow-xl hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] ${props.darkmode ? 'bg-gradient-to-br from-neutral-900 to-neutral-700 border-none text-white' : 'bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md border-white/20 text-black'} ${font1.className}`}>
+            <h1 className='text-2xl font-bold'>Profile</h1>
+            <div className={`m-1 p-4 rounded-3xl border-2 shadow-xl hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] ${props.darkmode ? 'bg-gradient-to-br from-neutral-900 to-neutral-700 border-none text-white' : 'bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md border-white/20 text-black'} ${font1.className}`}>
                 
                 <div className="flex items-center gap-4 mb-6">
                     <UserCircle className="w-16 h-16 text-emerald-500"/>

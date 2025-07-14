@@ -1,5 +1,3 @@
-
-
 import { NextResponse } from 'next/server'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -32,7 +30,7 @@ export async function POST(request) {
         role: user.role,
       },
       process.env.JWT_secret,
-      { expiresIn: '1h' }
+      { expiresIn: '4h' }
     )
     // 4. Return token to client
     return NextResponse.json({ token }, { status: 200 })

@@ -53,7 +53,6 @@ export default function ProfilePage() {
                 })
                 const postsData = await resPosts.json()
                 setPosts(postsData)
-                console.log(postsData)
 
             } catch (err) {
                 console.error('Error fetching user data:', err)

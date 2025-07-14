@@ -30,7 +30,7 @@ function sort_by_distance(userPosition, posts) {
 
     const distArr = []
     posts.map((post,ind) => {
-        const distance = getDistance(userPosition, avg_location(post.content_location))
+        const distance = getDistance({lat:userPosition[0],lng:userPosition[1]}, avg_location(post.content_location))
         distArr.push({index:ind, distance:distance})
     })
     distArr.sort((a,b) => a.distance - b.distance)

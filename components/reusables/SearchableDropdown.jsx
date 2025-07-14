@@ -1,7 +1,7 @@
 'use client'
 const options = [
   // Daily Use Items
-  "Watch", "Clock", "Phone", "Wallet", "Keys", "Charger", "Remote", "Glasses", "Sunglasses", "Backpack",
+  "Watch","Food","Drink", "Clock", "Phone", "Wallet", "Keys", "Charger", "Remote", "Glasses", "Sunglasses", "Backpack",
   "Bag", "Shoes", "Slippers", "Socks", "Hat", "Cap", "Umbrella", "Pen", "Pencil", "Notebook", "Book",
   "Eraser", "Sharpener", "Highlighter", "Marker", "Scissors", "Tape", "Glue", "Stapler", "Folder",
 

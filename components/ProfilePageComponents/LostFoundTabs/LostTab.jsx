@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import {Poppins} from 'next/font/google'
 import LostMiniCard from './LostMiniCard'
-import avg_location from './../../../lib/avg_location';
-import getDistance from './../../../lib/get_distance';
-import get_time_diff from './../../../lib/get_time_diff';
+import avg_location from '../../../lib/avg_location';
+import getDistance from '../../../lib/get_distance';
+import get_time_diff from '../../../lib/get_time_diff';
 
 const font1 = Poppins({
     weight:['400'],
@@ -26,10 +26,9 @@ export default function LostTab(props) {
 
 
 function sort_by_distance(userPosition, posts) {
-
     const distArr = []
     posts.map((post,ind) => {
-        const distance = getDistance(userPosition, avg_location(post.content_location))
+        const distance = getDistance({lat:userPosition[0], lng:userPosition[1]}, avg_location(post.content_location))
         distArr.push({index:ind, distance:distance})
     })
     distArr.sort((a,b) => a.distance - b.distance)

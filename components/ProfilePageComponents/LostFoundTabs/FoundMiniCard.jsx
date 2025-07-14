@@ -5,12 +5,20 @@ import getDistance from '../../../lib/get_distance'
 import {useState, useEffect} from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getComplementaryColor } from '../../../lib/complementaryColor'
-import edit from '../../../public/resources/edit.png'
-import dlt from '../../../public/resources/delete.png'
 import dynamic from 'next/dynamic';
+import { Edit,Trash2 } from 'lucide-react';
 const MapContainerProfileCards = dynamic(() => import ('@/components/ProfilePageComponents/LostFoundTabs/Map4/MapContainerProfileCards'), { ssr: false });
 
 export default function FoundMiniCard(props) {
+    const [content_name, set_content_name] = useState(null)
+    const [content_type, set_content_type] = useState(null)
+    const [content_details_model, set_content_details_model] = useState(null)
+    const [content_details_color, set_content_details_color] = useState(null)
+    const [content_details_special, set_content_details_special] = useState(null)
+    const [content_foundwhen_time, set_content_foundwhen_time] = useState(null)
+    const [content_foundwhen_date, set_content_foundwhen_date] = useState(null)
+    const [content_location, set_content_location] = useState(null)
+    const [content_pic, set_content_pic] = useState(null)
     const [userPosition, set_userPosition] = useState([])
     const ymdt_diff = props.ymdt_diff
     const [distance, set_distance] = useState()
@@ -18,20 +26,39 @@ export default function FoundMiniCard(props) {
     const [show_details, set_show_details] = useState(false)
     const [map_click_tip, set_map_click_tip] = useState(false)
     const [darkmode, set_darkmode] = useState(false)
+
+    const [edit_content_name, set_edit_content_name] = useState(false)
+    const [edit_content_type, set_edit_content_type] = useState(false)
+    const [edit_content_details_model, set_edit_content_details_model] = useState(false)
+    const [edit_content_details_color, set_edit_content_details_color] = useState(false)
+    const [edit_content_details_special, set_edit_content_details_special] = useState(false)
+    const [edit_content_foundwhen_time, set_edit_content_foundwhen_time] = useState(false)
+    const [edit_content_foundwhen_date, set_edit_content_foundwhen_date] = useState(false)
+    const [edit_content_location, set_edit_content_location] = useState(false)
+    const [edit_content_pic, set_edit_content_pic] = useState(false)
+
     function formatDate(input) {
         const date = new Date(input);
         const options = { year: 'numeric', month: 'long', day: '2-digit' };
         return date.toLocaleDateString('en-US', options);
     }
-
-
-
-
     useEffect(() => {
         set_post(props.post)
         set_userPosition(props.userPosition)
         set_darkmode(props.darkmode)
     }, [props.post, props.userPosition, props.darkmode])
+
+    useEffect(() => {
+        set_content_name(props.post.content_name)
+        set_content_type(props.post.content_type)
+        set_content_details_model(props.post.content_details.model)
+        set_content_details_color(props.post.content_details.color)
+        set_content_details_special(props.post.content_details.special)
+        set_content_foundwhen_time(props.post.content_foundwhen.time)
+        set_content_foundwhen_date(props.post.content_foundwhen.date)
+        set_content_pic(props.post.content_pic)
+        set_content_location(props.post.content_location)
+    }, [props.post])
 
   useEffect(() => {
     set_userPosition(props.userPosition)
@@ -40,30 +67,120 @@ export default function FoundMiniCard(props) {
     }
   }, [post, userPosition])
 
-  function editClicked() {
-    console.log('edit clicked')
+  function editClicked(route) {
+    switch (route) {
+        case 'content_name':
+            set_edit_content_name(true)
+            break
+        case 'content_type':
+            set_edit_content_type(true)
+            break
+        case 'content_details/model':
+            set_edit_content_details_model(true)
+            break
+        case 'content_details/color':
+            set_edit_content_details_color(true)
+            break
+        case 'content_details/special':
+            set_edit_content_details_special(true)
+            break
+        case 'content_foundwhen/time':
+            set_edit_content_foundwhen_time(true)
+            break
+        case 'content_foundwhen/date':
+            set_edit_content_foundwhen_date(true)
+            break
+        case 'content_location':
+            set_edit_content_location(true)
+            break
+        case 'content_pic':
+            set_edit_content_pic(true)
+            break
+    }
   }
 
   function deleteClicked() {
     console.log('delete clicked')
   }
+
+  function saveClicked(route) {
+    let value = '';
+
+    if (route === 'content_name') value = content_name;
+    else if (route === 'content_type') value = content_type;
+    else if (route === 'content_details/model') value = content_details_model;
+    else if (route === 'content_details/color') value = content_details_color;
+    else if (route === 'content_details/special') value = content_details_special;
+    else if (route === 'content_foundwhen/time') value = content_foundwhen_time;
+    else if (route === 'content_foundwhen/date') value = content_foundwhen_date;
+    else if (route === 'content_location') value = content_location;
+
+    set_edit_value(value);  // Optional if needed elsewhere in your state/UI
+    edit_in_db(route, value);
+    }
+  async function edit_in_db(route, value) {
+    console.log(route, value)
+    try {
+        const res = await fetch(`/api/edit/post/found/${route}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            post_id: post._id,
+            value: value,
+        }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+        console.log('Found post update successful')
+        } else {
+        alert(data.error || 'Found post update failed')
+        }
+    } catch (err) {
+        console.error("Data send failed", err);
+    }
+  }
+
   if (!post) return null;
   return (
-    <>
     <div className="w-full p-3 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
         <div className='flex flex-row justify-between'>
-            <Image src={edit} alt='EDIT' width={30} height={30} className="object-cover p-1 hover:scale-110 transition-all duration-300 m-1 mt-0 pt-0" onClick={editClicked}/>
-            <Image src={dlt} alt='DELETE ' width={30} height={30} className="object-cover p-1 hover:scale-110 transition-all duration-300 m-1 mt-0 pt-0" onClick={deleteClicked}/>
-            
+        <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_pic')}/>
+        <Trash2 className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>deleteClicked}/>     
         </div>
         <div className='flex flex-row'>
             <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
             <div className='flex flex-col ml-2'>
-                <h3 className="text-lg font-semibold mb-1">{post.content_name} {post.content_details.model? `(${post.content_details.model})` : ''}</h3>
-                <p className="text-sm text-gray-300 mb-2">{post.content_type}</p>
-                {/* <p className="text-sm text-gray-300 mb-2">
-                    {placename ? `${placename.city}, ${placename.country}` : 'Loading location...'}
-                </p> */}
+            <h3 className="text-lg font-semibold mb-1 flex flex-row">
+                {!edit_content_name? content_name : post.content_name}
+                {!edit_content_name?
+                <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_name')}/>
+                :
+                <div className='flex flex-row'>
+                    <input type='text' className="peer min-w-16 max-w-26 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Content Name' onChange={(e)=>{set_content_name(e.target.value)}} value={content_name}></input>
+                    <button className='bg-amber-950 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_name');set_edit_content_name(false)}} disabled={!content_name}>Save</button>
+                </div>}
+                {!edit_content_details_model? (content_details_model? content_details_model: '') : post.content_details.model}
+                {!edit_content_details_model? <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_details/model')}/>
+                :
+                <div className='flex flex-row'>
+                    <input type='text' className="peer min-w-16 max-w-26 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Content Name' onChange={(e)=>{set_content_details_model(e.target.value)}} value={content_details_model}></input>
+                    <button className='bg-amber-950 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_details/model');set_edit_content_details_model(false)}} disabled={!content_details_model}>Save</button>
+                </div>
+                }
+                </h3>
+                <div className='flex flex-row'>
+                    <div className="text-sm text-gray-300 mb-2 flex flex-row">
+                        {!edit_content_type? content_type : post.content_type}
+                        {!edit_content_type? <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_type')}/>
+                        :
+                        <div className='flex flex-row'>
+                            <input type='text' className="peer min-w-16 max-w-26 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Content Type' onChange={(e)=>{set_content_type(e.target.value)}} value={content_type}></input>
+                            <button className='bg-amber-950 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_type');set_edit_content_type(false)}} disabled={!content_type}>Save</button>
+                        </div>
+                        }</div>
+                </div>
                 <p className="text-sm text-gray-300 mb-2">{`${distance && distance < 1? `${(distance*1000)} m` : distance && `${distance} km`} away`}</p>
                 <p className="text-xs text-gray-300 mb-2">Found {`${ymdt_diff.yeard? ymdt_diff.yeard+' years ' : ''}${ymdt_diff.monthd?ymdt_diff.monthd+' months ' : ''}${ymdt_diff.dated?ymdt_diff.dated+' days ' : ''}${ymdt_diff.hourd && !ymdt_diff.monthd ? ymdt_diff.hourd+' hours ' : ''}${ymdt_diff.minuted && !ymdt_diff.dated?ymdt_diff.minuted+' minutes ' : ''} ago`}</p>
             </div>
@@ -83,18 +200,70 @@ export default function FoundMiniCard(props) {
             exit={{ opacity:0, height:0}}
             transition={{ duration: 0.3 }}
         >
-            <div className={`flex items-center m-2 w-fit h-fit p-1 rounded-xl`}
-            style={{color: getComplementaryColor(post.content_details.color), backgroundColor: post.content_details.color }}
+            <div className={`flex items-center m-2 w-fit h-fit p-1 rounded-xl flex flex-row`}
+            style={ !edit_content_details_color? {color: getComplementaryColor(content_details_color), backgroundColor: content_details_color } : {color: getComplementaryColor(post.content_details.color), backgroundColor: post.content_details.color }}
             >
-                Color of the item
+                {!edit_content_details_color? <div className={`flex items-center m-2 w-fit h-fit p-1 rounded-xl flex flex-row`}
+                style={ content_details_color? {color: getComplementaryColor(content_details_color), backgroundColor: content_details_color } : {color: getComplementaryColor(post.content_details.color), backgroundColor: post.content_details.color }}
+                >
+                    Color of the item
+                    <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_details/color')}/>
+                </div>
+                :
+                <div className='flex flex-row'> 
+                    <input type='color' className="peer min-w-16 max-w-26 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Content Name' onChange={(e)=>{set_content_details_color(e.target.value)}} value={content_details_color}></input>
+                    <button className='bg-amber-950 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_details/color');set_edit_content_details_color(false)}} disabled={!content_details_color}>Save</button>
+                </div>
+                }
             </div>
             <div className={`grid grid-cols-[1fr_3fr] m-2 w-full h-fit p-1 rounded-xl`}
             >
-                <p className='font-semibold text-xs'>Special markings </p><p className='bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg text-md p-1 w-fit'>{!!post.content_details.special? post.content_details.special: 'None'}</p>
+                <div className='font-semibold text-xs'>Special markings </div><div className='bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg text-md p-1 w-fit flex flex-row'>{!!post.content_details.special? (!edit_content_details_special? content_details_special : post.content_details.special): 'None'}
+                {!edit_content_details_special? <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_details/special')}/>
+                :
+                <div className='flex flex-row'>
+                    <input type='text' className="peer min-w-30 max-w-46 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Content Name' onChange={(e)=>{set_content_details_special(e.target.value)}} value={content_details_special}></input>
+                    <button className='bg-amber-950 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_details/special');set_edit_content_details_special(false)}} disabled={!content_details_special}>Save</button>
+                </div>
+                }</div>
             </div>
             <div className={`grid grid-cols-[1fr_3fr] m-2 w-full h-fit p-1 rounded-xl`}
             >
-                <p className='font-semibold text-xs'>Found</p><p className='bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg text-md p-1 w-fit'>{post.content_foundwhen.time}, {formatDate(post.content_foundwhen.date)}</p>
+                <p className='font-semibold text-xs'>Found</p>
+                <div className='bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg text-md p-1 w-fit flex flex-row'>
+                    {!edit_content_foundwhen_time? content_foundwhen_time:post.content_foundwhen.time}
+                    {!edit_content_foundwhen_time?
+                    <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_foundwhen/time')}/>
+                    :
+                    <div className='flex flex-row'>
+                    <select 
+                        id="dropdown"
+                        className="peer min-w-30 max-w-46 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition"
+                        defaultValue={""}
+                        onChange={(e)=>{set_content_foundwhen_time(e.target.value)}}
+                        >
+                            <option value="" disabled>Probable time of the day when found</option>
+                            <option value="Morning">Morning (6:01 AM - 11:00 AM) </option>
+                            <option value="Noon">Noon ( 11:01 AM - 3:00 PM )</option>
+                            <option value="Afternoon">Afternoon ( 3:01 PM - 6:00 PM )</option>
+                            <option value="Evening">Evening ( 6:01 PM - 8:00 PM )</option>
+                            <option value="Night">Night ( 8:01 PM - 12:00 AM )</option>
+                            <option value="Midnight">Midnight ( 12:01 AM - 6:00 AM )</option>
+                        </select>
+                    <button className='bg-amber-950 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_foundwhen/time');set_edit_content_foundwhen_time(false)}} disabled={!content_foundwhen_time}>Save</button>
+                </div>
+                    }
+                    ,
+                    {!edit_content_foundwhen_date? (formatDate(content_foundwhen_date)):(formatDate(post.content_foundwhen.date))}
+                    {!edit_content_foundwhen_date? 
+                    <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_foundwhen/date')}/>
+                    :
+                    <div className='flex flex-row'>
+                    <input type='date' className="peer min-w-30 max-w-46 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Content Name' onChange={(e)=>{set_content_foundwhen_date(e.target.value)}} value={content_foundwhen_date} max={new Date().toISOString().split("T")[0]} ></input>
+                    <button className='bg-amber-950 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_foundwhen/date');set_edit_content_foundwhen_date(false)}} disabled={!content_foundwhen_date}>Save</button>
+                </div>
+                    }
+                </div>
             </div>
             <div className={`grid grid-cols-[1fr_3fr] m-2 w-full h-fit p-1 rounded-xl`}
             >
@@ -106,6 +275,7 @@ export default function FoundMiniCard(props) {
                 >
                     {map_click_tip? 'Hide map' : 'Show on map'}
                 </button>
+                <Edit className="text-blue-700 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_location')}/>
                 {map_click_tip && (<>
                 <p className='text-xs text-gray-300 mb-2'>Click on the map to focus on the location</p>
                 </>)}
@@ -127,6 +297,5 @@ export default function FoundMiniCard(props) {
         </AnimatePresence>
 
     </div>
-    </>
   )
 }
