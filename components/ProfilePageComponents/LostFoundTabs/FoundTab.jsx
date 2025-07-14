@@ -57,7 +57,7 @@ const button_style = "px-4 py-1 text-sm font-medium text-white  rounded-full sha
             <button className={`${button_style} ${distance_sort ? 'bg-blue-700' : 'bg-emerald-800'}`} onClick={() => {sort_by_distance(userPosition, posts);set_distance_sort(true);set_date_sort(false);}}>Distance</button>
             <button className={`${button_style} ${date_sort ? 'bg-blue-700' : 'bg-emerald-800'}`} onClick={() => {sort_by_date(posts);set_date_sort(true);set_distance_sort(false);}}>Finding date</button>
         </div>
-        <div className=" rounded-3xl h-140.5 overflow-y-auto">
+        <div className=" rounded-3xl h-149 overflow-y-auto">
         {
             posts && Array.isArray(posts) && posts.map((post,index) => (
                 <FoundMiniCard key={index} post={post} userPosition={userPosition} ymdt_diff={get_time_diff(post.content_foundwhen)} darkmode={darkmode}/>

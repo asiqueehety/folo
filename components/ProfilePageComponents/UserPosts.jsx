@@ -16,7 +16,6 @@ export default function UserPosts(props) {
   return (
     <div>
         <div className='flex flex-col'>
-            <h1 className='text-2xl font-bold'>Posts</h1>
             <LostFoundTab posts={props.posts} darkmode={props.darkmode}/>
         </div>
     </div>
