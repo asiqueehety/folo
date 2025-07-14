@@ -27,6 +27,7 @@ export default function LostMiniCard(props) {
     const [show_details, set_show_details] = useState(false)
     const [map_click_tip, set_map_click_tip] = useState(false)
     const [darkmode, set_darkmode] = useState(false)
+    const [confirm_delete, set_confirm_delete] = useState(false)
 
     const [edit_content_name, set_edit_content_name] = useState(false)
     const [edit_content_type, set_edit_content_type] = useState(false)
@@ -39,6 +40,8 @@ export default function LostMiniCard(props) {
     const [edit_content_pic, set_edit_content_pic] = useState(false)
     const [edit_content_finder_reward, set_edit_content_finder_reward] = useState(false)
     const [edit_value, set_edit_value] = useState(null)
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [post_deleted, set_post_deleted] = useState(false)
 
 
     function formatDate(input) {
@@ -100,7 +103,7 @@ export default function LostMiniCard(props) {
             set_edit_content_location(true)
             break
         case 'content_pic':
-            set_edit_content_pic(true)
+            set_edit_content_pic(!edit_content_pic)
             break
         case 'finder_reward':
             set_edit_content_finder_reward(true)
@@ -108,9 +111,25 @@ export default function LostMiniCard(props) {
     }
   }
 
-  function deleteClicked() {
-    console.log('delete clicked lost ')
-  }
+  async function deleteClicked(route) {
+    const response = await fetch(`/api/delete/post/${route}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            post_id: post._id,
+        }),
+    })
+    if (response.ok) {
+        console.log('Post deleted successfully')
+        set_post_deleted(true)
+    } else {
+        console.error('Failed to delete post')
+    }
+    set_confirm_delete(false)
+}
+
   function saveClicked(route) {
     let value = '';
 
@@ -123,6 +142,7 @@ export default function LostMiniCard(props) {
     else if (route === 'content_lastused/date') value = content_lastused_date;
     else if (route === 'content_location') value = content_location;
     else if (route === 'finder_reward') value = content_finder_reward;
+    else if (route === 'content_pic') value = content_pic;
 
     set_edit_value(value);  // Optional if needed elsewhere in your state/UI
     edit_in_db(route, value);
@@ -150,15 +170,71 @@ export default function LostMiniCard(props) {
         console.error("Data send failed", err);
     }
   }
+
+  const handleUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setSelectedFile(file);
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+        const res = await fetch('/api/upload_image', {
+        method: 'POST',
+        body: formData,
+        });
+
+        const data = await res.json();
+        const imageUrl = data.url;
+
+        set_content_pic(imageUrl);
+        console.log("Image uploaded:", imageUrl);
+    } catch (err) {
+        console.error("Upload failed:", err);
+    }
+    };
+
   if (!post) return null;
   return (
     <div className="w-full p-3 bg-neutral-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
         <div className='flex flex-row justify-between'>
             <Edit className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_pic')}/>
-            <Trash2 className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>deleteClicked}/>
+            {!post_deleted? (!confirm_delete? 
+            <Trash2 className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>set_confirm_delete(true)}/>
+            :
+            <div className='flex flex-row text-xs'>
+                <p>Are you sure you want to delete this post?</p>
+                <button className='bg-red-500 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all' onClick={()=>{set_post_deleted(true);deleteClicked(`/lost`)}}>Yes</button>
+                <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all' onClick={()=>{set_confirm_delete(false)}}>No</button>
+            </div>)
+            :
+            <div className='flex flex-row text-xs'>
+                <p>Post deleted</p>
+            </div>
+            }
         </div>
+        {edit_content_pic && <div className="flex items-center space-x-4 m-2">
+            <label
+                htmlFor="file-upload"
+                className="cursor-pointer px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition"
+            >
+                Upload Image
+            </label>
+
+            <span className="text-sm text-gray-500">
+                {selectedFile ? selectedFile.name : 'No file selected'}
+            </span>
+            <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleUpload}
+            />
+            <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_pic');set_edit_content_pic(false)}} disabled={!content_pic}>Save</button>
+        </div>}
         <div className='flex flex-row'>
-            <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
+            <Image src={!edit_content_pic? content_pic : post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
             <div className='flex flex-col ml-2'>
                 <h3 className="text-lg font-semibold mb-1 flex flex-row">
                 {!edit_content_name? content_name : post.content_name}
