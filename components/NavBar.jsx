@@ -52,9 +52,6 @@ export default function NavBar() {
             Found something?
           </button>
         </div>
-        {/* <div>
-          <DashboardPage/>
-        </div> */}
       </nav>
     </div>
   )

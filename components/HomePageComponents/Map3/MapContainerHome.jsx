@@ -211,7 +211,7 @@ export default function MapContainerHome(props) {
         center={!!showPostLocations? [avg_location(showPostLocations.content_location).lat, avg_location(showPostLocations.content_location).lng] : userPosition}
         zoom={!!showPostLocations? 17 : 14.5}
         scrollWheelZoom={true}
-        className="lg:rounded-4xl rounded-2xl md:w-180 sm:w-88 w-75 lg:h-140 h-90 lg:shadow-stone-700 lg:shadow-lg shadow-none lg:m-2 m-0"
+        className="lg:rounded-4xl rounded-2xl md:w-180 sm:w-88 w-75 lg:h-135 h-90 lg:shadow-stone-700 lg:shadow-lg shadow-none lg:m-2 m-0"
       >
         <TileLayer
           attribution='<a href="https://asiqueehety.vercel.app" target="_blank">Asique Ehety</a>'

@@ -2,6 +2,7 @@
 import React, { useEffect,useState } from 'react'
 import {Inter, Poppins} from 'next/font/google'
 import { useRouter } from 'next/navigation';
+import {motion, AnimatePresence} from 'framer-motion'
 
 const font1 = Poppins({
   weight:['400'],
@@ -12,6 +13,7 @@ export default function WelcomeContainer(props) {
 
   const [user_name,set_user_name] = useState('')
   const [darkmode,set_darkmode] = useState(false)
+  const [hovered,set_hovered] = useState(false)
   const router = useRouter();
 
 
@@ -55,25 +57,29 @@ export default function WelcomeContainer(props) {
 
   return (
     <>
-    {/* <div className={`max-w-md mx-auto bg-slate-800 bg-opacity-90 rounded-3xl shadow-2xl border-2 border-transparent hover:bg-slate-700 hover:border-sky-400 transition-colors duration-500 ease-in-out p-8 text-slate-200 font-sans m-1 ${font1.className} `}>
-      <h2 className="text-5xl font-extrabold mb-6 tracking-wide">Welcome back</h2>
-      <p className="text-slate-300 leading-relaxed">
-        Let's find it all out.
-      </p>
-    </div>
-    <div className="max-w-md mx-auto p-8 rounded-2xl bg-white/10 backdrop-blur-lg border border-white/20 shadow-lg text-black">
-      <h2 className="text-2xl font-bold mb-4">Glass Container</h2>
-      <p className="text-black/80">
-        This is a glass-like, transparent container with a soft blur and modern style using Tailwind CSS.
-      </p>
-    </div> */}
-
-      <div className={`${darkmode? 'bg-neutral-800 border-none':'bg-white/10 backdrop-blur-md border-white/20'} rounded-3xl border-2  shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 ${darkmode? 'text-white' : 'text-black'} font-sans m-1 mt-1.5 ${font1.className}`}>
-        <h2 className="text-5xl font-extrabold mb-3 tracking-wide">Welcome back, {user_name}</h2>
+      <div className={`${darkmode? 'bg-neutral-800 border-none':'bg-white/10 backdrop-blur-md border-white/20'} rounded-3xl border-2  shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 ${darkmode? 'text-white' : 'text-black'} font-sans m-1 mt-1.5 ${font1.className}`} onMouseEnter={()=>{set_hovered(true)}} onMouseLeave={()=>{set_hovered(false)}} onClick={()=>{router.push('/profile')}}>
+        <h1 className="text-5xl font-extrabold mb-3 tracking-wide">
+          Welcome back, {user_name}
+        </h1>
         <p className={`${darkmode? 'text-white/80' : 'text-black/80'} leading-relaxed`}>
           Let's find it all out.
         </p>
+        <AnimatePresence>
+          {hovered && 
+          <motion.h1 className={`${props.darkmode? 'text-blue-200' : 'text-blue-500'} cursor-pointer text-xs`}
+          initial={{opacity:0, height:0}}
+          animate={{opacity:1, height:'auto'}}
+          exit={{opacity:0, height:0}}
+          transition={{duration:0.2, ease:'easeInOut'}}
+          >
+            Click to visit your profile
+          </motion.h1>
+          }
+        </AnimatePresence>
+
+        
       </div>
+      
     </>
   )
 }

@@ -1,5 +1,3 @@
-
-import DashboardPage from "@/components/DashboardPage";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Background from "@/components/Background";
@@ -18,9 +16,6 @@ export default function RootLayout({ children }) {
       <html lang="en"><DarkModeProvider>
         <body>
           <NavBar/>
-          <div className="fixed top-20 right-0 z-50">
-            <DashboardPage/>
-          </div>
           <Background/>
           <DarkModeToggle/>
           <section className="pt-20"></section>

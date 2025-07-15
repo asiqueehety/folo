@@ -27,10 +27,7 @@ export default function DashboardPage() {
     
   function logoutClicked()
   {
-    localStorage.removeItem('token')
-    setIsLoggedIn(false)
-    setShowDash(false)
-    router.push('/login')
+    localStorage.removeItem('token');router.push('/login');
   }
 
   function buttonClicked(dest)
