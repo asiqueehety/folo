@@ -56,19 +56,7 @@ export default function LoginPage() {
   }
 
   return (
-    // <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-4 rounded-3xl ${darkmode ? 'text-neutral-100 placeholder:text-neutral-100' : 'text-blue-950'}`}>
-    //   <h1 className={`${font1.className} text-6xl`}>Login to FoLo</h1>
-    //   <form className='flex flex-col justify-center items-center m-4 mt-15'>
-    //     <div className='flex flex-row justify-center items-center'><input type='text' className={`rounded-xl border-none ${darkmode ? 'text-neutral-200 placeholder:text-neutral-300' : 'text-amber-950'} h-10 w-80 m-2 p-2`} placeholder='Email or Username' onChange={(e)=>{setEmail(e.target.value)}} value={emailOrUsername}></input></div>
-    //     <div className='flex flex-row justify-center items-center'><input type='password' className={`rounded-xl border-none ${darkmode ? 'text-neutral-200 placeholder:text-neutral-300' : 'text-amber-950'} h-10 w-80 m-2 p-2`} placeholder='Password' onChange={(e)=>{setpw(e.target.value)}} value={pw}></input></div>
-    //     <button className={`${darkmode ? 'bg-neutral-100 text-neutral-950' : 'bg-amber-950 text-white'} p-3 m-2 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all`} onClick={clickedLogin}>Login</button>
-    //   </form>
-    //   <div className='text-sm flex flex-col justify-center items-center'>
-    //     <h1 className={`${darkmode ? 'text-neutral-100' : 'text-black'}`}>Don't have an account?</h1>
-    //     <Link href='/signup' className='text-blue-700 hover:text-blue-600'>Sign Up</Link>
-    //   </div>
-    // </div>
-    <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-8 bg-none shadow-xl rounded-3xl max-w-md mx-auto ${darkmode ? 'text-neutral-100' : 'text-blue-950'}`}>
+    <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-8 shadow-xl rounded-3xl max-w-md mx-auto ${darkmode ? 'text-neutral-100 bg-neutral-800' : 'text-blue-950 bg-white/100'}`}>
       <h1 className={`${font1.className} text-5xl mb-6`}>Login to <span className='text-purple-600'>FoLo</span></h1>
 
       <form className='flex flex-col space-y-5 w-full'>
