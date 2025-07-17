@@ -1,11 +1,54 @@
 'use client'
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 
-export default function ClaimedFound({ onClose }) {
+export default function ClaimedFound(props) {
+  const onClose = props.onClose;
+  const post = props.post;
+  const finder_id = props.finder_id;
+
   const [claimMessage, setClaimMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [con_pic, set_con_pic] = useState(null);
+  const [claimed,set_claimed] = useState(false)
+
+  useEffect(() => {
+    checkClaim();
+  }, []);
+
+  async function checkClaim() {
+    const res = await fetch('/api/check/claim/found', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({post_id: post._id, finder_id: finder_id}),
+    });
+    const data = await res.json();
+    console.log(data);
+    set_claimed(data.claimed);
+  }
+
+  async function submitClaim() {
+    const res = await fetch('/api/create/claim/found', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(
+        {
+          claim_message: claimMessage, 
+          claim_pic: con_pic, 
+          post_id: post._id, 
+          finder_id: finder_id
+        }
+      ),
+
+    });
+    const data = await res.json();
+    console.log(data);
+    onClose();
+  }
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -34,7 +77,7 @@ export default function ClaimedFound({ onClose }) {
       <div
         className="relative inset-0 bg-none backdrop-blur-sm flex items-center justify-center z-50 mt-3"
       >
-        <div
+        {!claimed? <div
           className="bg-white rounded-3xl p-6 w-[90%] max-w-md text-gray-900 shadow-xl relative"
         >
           <h2 className="text-2xl font-bold mb-4 text-center text-indigo-700">Did you find it?</h2>
@@ -78,16 +121,22 @@ export default function ClaimedFound({ onClose }) {
             </button>
             <button
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-xl transition disabled:opacity-50"
-              disabled={!claimMessage.trim()}
-              onClick={() => {
-                console.log("Claim message sent:", claimMessage);
-                onClose();
-              }}
+              disabled={!claimMessage.trim() || !con_pic}
+              onClick={()=>{submitClaim();set_claimed(true)}}
             >
               Submit Claim
             </button>
           </div>
         </div>
+        :
+        <div className='bg-white rounded-3xl p-6 w-[90%] max-w-md text-gray-900 shadow-xl relative'>
+          <h2 className='text-2xl font-bold mb-4 text-center text-indigo-700'>Claimed</h2>
+          <p className='mb-4 text-gray-600 text-center'>
+            Your claim has been submitted.
+          </p>
+          <button className='bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-xl transition' onClick={onClose}>Close</button>
+        </div>
+        }
       </div>
   );
 }

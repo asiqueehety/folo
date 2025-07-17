@@ -120,7 +120,7 @@ export default function FoundMiniCard(props) {
             <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors"
             onClick={()=>{set_claim(!claim)}}
             >
-                Claim
+                Claim ownership
             </button>
             }
             <AnimatePresence>
