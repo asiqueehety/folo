@@ -29,6 +29,11 @@ export default function LostTab(props) {
           console.warn("onShowDetails is missing or not a function in LostTab");
         }
       }, [props.onShowDetails]);
+    useEffect(() => {
+    if (typeof props.expand_image !== 'function') {
+        console.warn("expand_image is missing or not a function in LostTab");
+    }
+    }, [props.expand_image]);
       
 
 
@@ -78,7 +83,7 @@ const button_style = "px-4 py-1 text-sm font-medium text-white rounded-full shad
         <div className=" rounded-3xl h-145.5 overflow-y-auto">
         {
             posts && Array.isArray(posts) && posts.map((post,index) => (
-                <LostMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_lastused)} onShowDetails={props.onShowDetails}/>
+                <LostMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_lastused)} onShowDetails={props.onShowDetails} expand_image={props.expand_image}/>
             ))
         }
         </div>

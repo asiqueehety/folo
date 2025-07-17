@@ -4,6 +4,7 @@ import { Lato } from 'next/font/google'
 import React, {useState} from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useDarkMode } from '@/app/context/DarkModeContext'
 
 
 const font1 = Lato({
@@ -22,6 +23,7 @@ export default function LoginPage() {
   const [emailOrUsername,setEmail] = useState('')
   const [pw,setpw] = useState('')
   const router = useRouter()
+  const {darkmode} = useDarkMode();
   
 
   async function clickedLogin(e)
@@ -54,17 +56,70 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-4 rounded-3xl`}>
-      <h1 className={`${font1.className} text-6xl text-blue-950`}>Login to FoLo</h1>
-      <form className='flex flex-col justify-center items-center m-4 mt-15'>
-        <div className='flex flex-row justify-center items-center'><input type='text' className='rounded-xl border-none text-amber-950 h-10 w-80 m-2 p-2' placeholder='Email or Username' onChange={(e)=>{setEmail(e.target.value)}} value={emailOrUsername}></input></div>
-        <div className='flex flex-row justify-center items-center'><input type='password' className='rounded-xl border-none text-amber-950 h-10 w-80 m-2 p-2' placeholder='Password' onChange={(e)=>{setpw(e.target.value)}} value={pw}></input></div>
-        <button className='bg-amber-950 text-white p-3 m-2 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all' onClick={clickedLogin}>Login</button>
+    // <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-4 rounded-3xl ${darkmode ? 'text-neutral-100 placeholder:text-neutral-100' : 'text-blue-950'}`}>
+    //   <h1 className={`${font1.className} text-6xl`}>Login to FoLo</h1>
+    //   <form className='flex flex-col justify-center items-center m-4 mt-15'>
+    //     <div className='flex flex-row justify-center items-center'><input type='text' className={`rounded-xl border-none ${darkmode ? 'text-neutral-200 placeholder:text-neutral-300' : 'text-amber-950'} h-10 w-80 m-2 p-2`} placeholder='Email or Username' onChange={(e)=>{setEmail(e.target.value)}} value={emailOrUsername}></input></div>
+    //     <div className='flex flex-row justify-center items-center'><input type='password' className={`rounded-xl border-none ${darkmode ? 'text-neutral-200 placeholder:text-neutral-300' : 'text-amber-950'} h-10 w-80 m-2 p-2`} placeholder='Password' onChange={(e)=>{setpw(e.target.value)}} value={pw}></input></div>
+    //     <button className={`${darkmode ? 'bg-neutral-100 text-neutral-950' : 'bg-amber-950 text-white'} p-3 m-2 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all`} onClick={clickedLogin}>Login</button>
+    //   </form>
+    //   <div className='text-sm flex flex-col justify-center items-center'>
+    //     <h1 className={`${darkmode ? 'text-neutral-100' : 'text-black'}`}>Don't have an account?</h1>
+    //     <Link href='/signup' className='text-blue-700 hover:text-blue-600'>Sign Up</Link>
+    //   </div>
+    // </div>
+    <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-8 bg-none shadow-xl rounded-3xl max-w-md mx-auto ${darkmode ? 'text-neutral-100' : 'text-blue-950'}`}>
+      <h1 className={`${font1.className} text-5xl mb-6`}>Login to <span className='text-purple-600'>FoLo</span></h1>
+
+      <form className='flex flex-col space-y-5 w-full'>
+        <input 
+          type='text'
+          className={`input-field ${darkmode ? 'bg-neutral-800 text-neutral-200 placeholder:text-neutral-400' : 'bg-neutral-100 text-neutral-950 border-neutral-950/50 border-4'}`}
+          placeholder='Email or Username'
+          onChange={(e)=> setEmail(e.target.value)}
+          value={emailOrUsername}
+        />
+
+        <input 
+          type='password'
+          className={`input-field ${darkmode ? 'bg-neutral-800 text-neutral-200 placeholder:text-neutral-400' : ''}`}
+          placeholder='Password'
+          onChange={(e)=> setpw(e.target.value)}
+          value={pw}
+        />
+
+        <button
+          type='button'
+          onClick={clickedLogin}
+          className={`bg-indigo-700 text-white py-3 rounded-xl font-semibold shadow-md hover:bg-indigo-800 transition-all duration-300`}
+        >
+          Login
+        </button>
       </form>
-      <div className='text-sm flex flex-col justify-center items-center'>
-        <h1 className='text-black'>Don't have an account?</h1>
-        <Link href='/signup' className='text-blue-700 hover:text-blue-600'>Sign Up</Link>
+
+      <div className='text-sm text-center mt-6'>
+        <p>Don't have an account?</p>
+        <Link href='/signup' className='text-blue-500 hover:underline'>Sign Up</Link>
       </div>
+
+      <style jsx>{`
+        .input-field {
+          width: 100%;
+          padding: 0.75rem 1rem;
+          border: none;
+          border-radius: 0.75rem;
+          outline: none;
+          font-size: 1rem;
+          background-color: #F9FAFB;
+          box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+        }
+        .input-field:focus {
+          background-color: #FFFFFF;
+          box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+          transform: scale(1.02);
+        }
+      `}</style>
     </div>
   )
 }

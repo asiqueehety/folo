@@ -5,6 +5,7 @@ import getDistance from '../../../lib/get_distance'
 import {useState, useEffect} from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getComplementaryColor } from '../../../lib/complementaryColor'
+import ClaimYours from '@/components/HomePageComponents/LostFoundTabs/ClaimYours'
 
 
 
@@ -14,20 +15,51 @@ export default function FoundMiniCard(props) {
     const userPosition = props.userPosition
     const ymdt_diff = props.ymdt_diff
     const distance = getDistance(userPosition, avg_location(post.content_location))
-
     const [show_details, set_show_details] = useState(false)
     const [map_click_tip, set_map_click_tip] = useState(false)
+    const [loser_id, set_loser_id] = useState(null)
+    const [claim, set_claim] = useState(false)
+    const [is_loser, set_is_loser] = useState(false)
+    const expand_image = props.expand_image;
+
     function formatDate(input) {
         const date = new Date(input);
         const options = { year: 'numeric', month: 'long', day: '2-digit' };
         return date.toLocaleDateString('en-US', options);
     }
 
+    
+    useEffect(()=>
+        {
+            fetch('/api/get_user_id', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                set_loser_id(data.userId)
+                set_is_loser(data.userId == post.finder_id)
+            })
+            .catch(err => {
+                console.error(err)
+            })
+        },[post])
+
   return (
     <>
     <div className="w-full p-3 bg-gray-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
         <div className='flex flex-row'>
-            <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
+            <Image src={post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"
+            onClick={() => {
+                if (typeof expand_image === 'function') {
+                  expand_image(post);
+                } else {
+                  console.error("expand_image is not a function", expand_image);
+                }
+            }}
+            />
             <div className='flex flex-col ml-2'>
                 <h3 className="text-lg font-semibold mb-1">{post.content_name} {post.content_details.model? `(${post.content_details.model})` : ''}</h3>
                 <p className="text-sm text-gray-300 mb-2">{post.content_type}</p>
@@ -84,9 +116,24 @@ export default function FoundMiniCard(props) {
                 {map_click_tip && <p className='text-xs text-gray-300 mb-2'>Click on the map to focus on the location</p>}
             </div>
             
-            <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors">
+            {!is_loser && 
+            <button className="mt-2 px-3 py-1 text-sm bg-blue-600 rounded-full hover:bg-blue-700 transition-colors"
+            onClick={()=>{set_claim(!claim)}}
+            >
                 Claim
             </button>
+            }
+            <AnimatePresence>
+            {claim && 
+            <motion.div
+            initial={{opacity:0, height:0}}
+            animate={{ opacity:1, height:'auto'}}
+            exit={{ opacity:0, height:0}}
+            transition={{ duration: 0.3 }}
+            >
+                <ClaimYours onClose={() => set_claim(false)} post={post} loser_id={loser_id}/>
+            </motion.div>}
+            </AnimatePresence>
             
         </motion.div>
         )}

@@ -28,6 +28,7 @@ export default function LostMiniCard(props) {
     const [map_click_tip, set_map_click_tip] = useState(false)
     const [darkmode, set_darkmode] = useState(false)
     const [confirm_delete, set_confirm_delete] = useState(false)
+    const expand_image = props.expand_image;
 
     const [edit_content_name, set_edit_content_name] = useState(false)
     const [edit_content_type, set_edit_content_type] = useState(false)
@@ -234,7 +235,15 @@ export default function LostMiniCard(props) {
             <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_pic');set_edit_content_pic(false)}} disabled={!content_pic}>Save</button>
         </div>}
         <div className='flex flex-row'>
-            <Image src={!edit_content_pic? content_pic : post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"/>
+            <Image src={!edit_content_pic? content_pic : post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"
+            onClick={() => {
+                if (typeof expand_image === 'function') {
+                  expand_image(post);
+                } else {
+                  console.error("expand_image is not a function", expand_image);
+                }
+            }}
+            />
             <div className='flex flex-col ml-2'>
                 <h3 className="text-lg font-semibold mb-1 flex flex-row">
                 {!edit_content_name? content_name : post.content_name}

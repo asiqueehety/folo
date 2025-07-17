@@ -38,7 +38,7 @@ export default function NavBar() {
           <h1 className='lg:text-6xl text-3xl'><button onClick={()=>{router.push('/')}}>FoLo</button></h1>
           <p className='lg:text-xl text-sm flex justify-end'>Just find it.</p>
         </div>
-        <div className='xl:flex xl:flex-row h-fit hidden'>
+        <div className='xl:flex xl:flex-row h-fit'>
           <button
             onClick={()=>{handleClick('/create/post/lost')}}
             className={buttonStyles()}

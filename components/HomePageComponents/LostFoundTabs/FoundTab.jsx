@@ -65,7 +65,7 @@ const button_style = "px-4 py-1 text-sm font-medium text-white  rounded-full sha
         <div className=" rounded-3xl h-145.5 overflow-y-auto">
         {
             posts && Array.isArray(posts) && posts.map((post,index) => (
-                <FoundMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_foundwhen)} onShowDetails={props.onShowDetails}/>
+                <FoundMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_foundwhen)} onShowDetails={props.onShowDetails}  expand_image={props.expand_image}/>
             ))
         }
         </div>

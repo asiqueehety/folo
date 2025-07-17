@@ -99,26 +99,95 @@ export default function SignupPage() {
 
 
   return (
-    <div className={`${font2.className} flex justify-center items-center flex-col lg:mt-20 mt-0 p-4 rounded-3xl`}>
-      <h1 className={`${font1.className} text-6xl text-blue-950`}>Signup to FoLo</h1>
-      <form className='flex flex-col justify-center items-center m-4 mt-15 *:flex *:flex-row'>
-        <div className='flex flex-row justify-center items-center '><input type='text' className='rounded-xl border-amber-950/50 border-4 text-amber-950 h-10 w-70 m-2 p-2' placeholder='Enter your username' onChange={(e)=>{setUname(e.target.value)}} value={uname}></input></div>
-        <div className='flex flex-row justify-center items-center'><input type='email' className='rounded-xl border-amber-950/50 border-4 text-amber-950 h-10 w-70 m-2 p-2' placeholder='Enter your email' onChange={(e)=>{setEmail(e.target.value)}} value={email}></input></div>
-        <div>
-          <div className='flex flex-row justify-center items-center'><input type='password' className='rounded-xl border-amber-950/50 border-4 text-amber-950 h-10 w-70 m-2 p-2' placeholder='Enter your password' onChange={(e)=>{setpw(e.target.value)}} value={pw}></input></div>
-          <div className='flex flex-row justify-center items-center'><input type='password' className='rounded-xl border-amber-950/50 border-4 text-amber-950 h-10 w-70 m-2 p-2' placeholder='Retype your password' onChange={(e)=>{setrpw(e.target.value)}} value={rpw}></input></div>
-        </div>
-          {((pw!=rpw) && (rpw != ''))? <h1 className='text-red-500'>Passwords don't match</h1>:<></>}
-          <div className='flex flex-row justify-center items-center rounded-xl border-amber-950/50 border-4 text-amber-950 h-10 w-fit m-2 p-2' placeholder='Click to detect your location' onClick={()=>{locatePos()}}>
-            {Object.keys(address).length === 0? <h1>Click to locate</h1> : <h1>Location found</h1>}
-          </div>
-        <div className='flex flex-row justify-center items-center'><input type='number' className='rounded-xl border-amber-950/50 border-4 text-amber-950 h-10 w-70 m-2 p-2'  placeholder='Enter your phone number' onChange={(e)=>{setphone(e.target.value)}} value={phone}></input></div>
-        <button className={`bg-amber-950 text-white p-3 m-2 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all ${!allOk()? 'disabled opacity-20':''} `} onClick={clickedSignup}>Sign Up</button>
+    <div className={`${font2.className} flex justify-center items-center flex-col mt-4 p-10 bg-gradient-to-br from-purple-50 via-white to-indigo-50 shadow-2xl rounded-3xl border border-gray-300 max-w-xl mx-auto`}> 
+      <h1 className={`${font1.className} text-5xl text-indigo-900 mb-8 tracking-wide`}>Sign Up to <span className='text-purple-700'>FoLo</span></h1>
+
+      <form className='flex flex-col space-y-5 w-full'>
+        <input 
+          type='text'
+          className='input-field'
+          placeholder='Username'
+          onChange={(e)=> setUname(e.target.value)}
+          value={uname}
+        />
+
+        <input 
+          type='email'
+          className='input-field'
+          placeholder='Email'
+          onChange={(e)=> setEmail(e.target.value)}
+          value={email}
+        />
+
+        <input 
+          type='password'
+          className='input-field'
+          placeholder='Password'
+          onChange={(e)=> setpw(e.target.value)}
+          value={pw}
+        />
+
+        <input 
+          type='password'
+          className='input-field'
+          placeholder='Confirm Password'
+          onChange={(e)=> setrpw(e.target.value)}
+          value={rpw}
+        />
+
+        {pw !== rpw && rpw !== '' && (
+          <p className='text-red-500 text-sm'>Passwords don't match</p>
+        )}
+
+        <button 
+          type='button'
+          className='input-field bg-indigo-100 text-indigo-900 font-medium cursor-pointer hover:bg-indigo-200'
+          onClick={locatePos}
+        >
+          {Object.keys(address).length === 0 ? 'Detect Location' : 'Location Found'}
+        </button>
+
+        <input 
+          type='number'
+          className='input-field'
+          placeholder='Phone Number'
+          onChange={(e)=> setphone(e.target.value)}
+          value={phone}
+        />
+
+        <button
+          type='button'
+          onClick={clickedSignup}
+          className={`bg-indigo-700 text-white py-3 rounded-xl font-semibold shadow-md hover:bg-indigo-800 transition-all duration-300 ${!allOk() ? 'opacity-50 cursor-not-allowed' : ''}`}
+          disabled={!allOk()}
+        >
+          Sign Up
+        </button>
       </form>
-      <div className='text-sm flex flex-col justify-center items-center'>
-        <h1 className='text-black'>Already have an existing account?</h1>
-        <Link href='/login' className='text-blue-700 hover:text-blue-600'>Log in</Link>
+
+      <div className='text-sm text-center mt-6 text-gray-600'>
+        <p>Already have an account?</p>
+        <Link href='/login' className='text-blue-600 hover:underline'>Log in</Link>
       </div>
+
+      <style jsx>{`
+        .input-field {
+          width: 100%;
+          padding: 0.75rem 1rem;
+          border: none;
+          border-radius: 0.75rem;
+          outline: none;
+          font-size: 1rem;
+          background-color: #F9FAFB;
+          box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+        }
+        .input-field:focus {
+          background-color: #FFFFFF;
+          box-shadow: 0 0 0 3px rgba(124,58,237,0.3);
+          transform: scale(1.02);
+        }
+      `}</style>
     </div>
   )
 }
