@@ -3,6 +3,7 @@
 import { Lato } from 'next/font/google'
 import React, {useState,useRef} from 'react'
 import Link from 'next/link'
+import { CheckCircleIcon, LocateFixedIcon, LocateIcon } from 'lucide-react'
 const font1 = Lato({
   weight:['900'],
   subsets: ['latin'],
@@ -144,7 +145,17 @@ export default function SignupPage() {
           className='input-field bg-indigo-100 text-indigo-900 font-medium cursor-pointer hover:bg-indigo-200'
           onClick={locatePos}
         >
-          {Object.keys(address).length === 0 ? 'Detect Location' : 'Location Found'}
+          {Object.keys(address).length === 0 ? 
+          <div className='flex items-center'>
+            <LocateIcon className='w-4 h-4 mr-2'/>
+            Detect Location 
+          </div>
+          : 
+          <div className='flex items-center'>
+            <LocateFixedIcon className='w-4 h-4 mr-2'/>
+            Location Found
+          </div>
+          }
         </button>
 
         <input 
