@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
           <NavBar/>
           <Background/>
           <DarkModeToggle/>
-          <section className="pt-20"></section>
+          <section className="lg:pt-5 pt-10"></section>
           {children}
         </body></DarkModeProvider>
     </html>

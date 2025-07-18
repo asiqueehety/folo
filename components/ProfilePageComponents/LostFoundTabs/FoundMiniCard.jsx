@@ -260,7 +260,7 @@ export default function FoundMiniCard(props) {
             />
             <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_pic');set_edit_content_pic(false)}} disabled={!content_pic}>Save</button>
         </div>}
-        <div className='flex flex-row'>
+        <div className='flex lg:flex-row flex-col items-center lg:items-start'>
             <Image src={!edit_content_pic? content_pic : post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"
             onClick={() => {
                 if (typeof expand_image === 'function') {
@@ -271,7 +271,7 @@ export default function FoundMiniCard(props) {
             }}
             />
             <div className='flex flex-col ml-2'>
-            <h3 className="text-lg font-semibold mb-1 flex flex-row">
+            <h3 className="text-lg font-semibold mb-1 flex lg:flex-row flex-col">
                 {!edit_content_name? content_name : post.content_name}
                 {!edit_content_name?
                 <Edit className="text-blue-600 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_name')}/>
@@ -305,7 +305,7 @@ export default function FoundMiniCard(props) {
             </div>
         </div>
         <div className='flex flex-row justify-between'>
-            <button className="mt-2 px-3 py-1 text-sm bg-black/60 rounded-full hover:bg-blue-700 transition-colors" 
+            <button className="mt-2 px-3 py-1 lg:text-sm text-xs bg-black/60 rounded-full hover:bg-blue-700 transition-colors" 
             onClick={() => {set_show_details(!show_details);set_show_claim(false); set_map_click_tip(false);}}
             >
                 {show_details ? 'Hide Details' : 'View Details'}

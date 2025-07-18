@@ -5,6 +5,7 @@ import { UserCircle, Mail, Phone, MapPin, CalendarDays, Edit , Settings, LogOutI
 import MapLoading from '../reusables/MapLoading'
 import {motion, AnimatePresence} from 'framer-motion'
 import {useRouter} from 'next/navigation'
+import DarkModeToggle from '../DarkModeToggle'
 
 const font1 = Poppins({
   weight:['400'],
@@ -171,6 +172,7 @@ export default function UserProfile(props) {
                         :
                         <div className={`m-1 p-4 rounded-3xl border-2 shadow-xl hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] ${props.darkmode ? 'bg-gradient-to-br from-neutral-900 to-neutral-700 border-none text-white' : 'bg-gradient-to-br from-white/20 to-white/10 backdrop-blur-md border-white/20 text-black'} ${font1.className}`}>
                             <button className='bg-cyan-600 text-white p-2 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{set_edit_pw(true)}}>Change Password</button>
+                            <DarkModeToggle/>
                         </div>
                         }
                         

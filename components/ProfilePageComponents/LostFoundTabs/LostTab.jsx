@@ -61,13 +61,13 @@ const button_style = "px-4 py-1 text-sm font-medium text-white rounded-full shad
   return (
 
     <div className={`${darkmode? 'bg-neutral-800 border-none hover:bg-neutral-700':'bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20'} rounded-3xl border-2  shadow-xl  hover:shadow-2xl transition-all duration-500 hover:scale-99 ease-in-out transform p-1 py-0 ${darkmode? 'text-white' : 'text-black'} font-sans m-1 ${font1.className} w-full flex flex-col animated-gradient-bg-losttab`}>
-        <h2 className="text-3xl font-extrabold mb-2 tracking-wide p-1">Lost</h2>
+        <h2 className="lg:text-3xl text-xl font-extrabold mb-2 tracking-wide p-1">Lost</h2>
         <div className='flex flex-row'>
             <button className={`${button_style} ${distance_sort ? 'bg-red-700' : ' bg-emerald-800'}`} onClick={() => {sort_by_distance(userPosition, posts);set_distance_sort(true);set_reward_sort(false);set_date_sort(false);}}>Distance</button>
             <button className={`${button_style} ${reward_sort ? 'bg-red-700' : ' bg-emerald-800'}`} onClick={() => {sort_by_reward(posts);set_reward_sort(true);set_distance_sort(false);set_date_sort(false);}}>Reward</button>
             <button className={`${button_style} ${date_sort ? 'bg-red-700' : ' bg-emerald-800'}`} onClick={() => {sort_by_date(posts);set_date_sort(true);set_distance_sort(false);set_reward_sort(false);}}>Losing date</button>
         </div>
-        <div className=" rounded-3xl h-149 overflow-y-auto">
+        <div className=" rounded-3xl lg:max-h-149 max-h-96 h-fit overflow-y-auto">
         {
             posts && Array.isArray(posts) && posts.map((post,index) => (
                 <LostMiniCard key={index} post={post} userPosition={props.userPosition} ymdt_diff={get_time_diff(post.content_lastused)} darkmode={darkmode} expand_image={props.expand_image}/>

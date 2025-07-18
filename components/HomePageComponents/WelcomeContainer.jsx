@@ -57,11 +57,11 @@ export default function WelcomeContainer(props) {
 
   return (
     <>
-      <div className={`${darkmode? 'bg-neutral-800 border-none':'bg-white/10 backdrop-blur-md border-white/20'} cursor-pointer rounded-3xl border-2  shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 ${darkmode? 'text-white' : 'text-black'} font-sans m-1 mt-1.5 ${font1.className}`} onMouseEnter={()=>{set_hovered(true)}} onMouseLeave={()=>{set_hovered(false)}} onClick={()=>{router.push('/profile')}}>
-        <h1 className="text-5xl font-extrabold mb-3 tracking-wide">
+      <div className={`${darkmode? 'bg-neutral-800 border-none':'bg-white/10 backdrop-blur-md border-white/20'} cursor-pointer rounded-3xl border-2 shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 ${darkmode? 'text-white' : 'text-black'} font-sans lg:m-1 m-3 mt-1.5 ${font1.className}`} onMouseEnter={()=>{set_hovered(true)}} onMouseLeave={()=>{set_hovered(false)}} onClick={()=>{router.push('/profile')}}>
+        <h1 className="lg:text-5xl text-3xl font-extrabold mb-3 tracking-wide">
           Welcome back, {user_name}
         </h1>
-        <p className={`${darkmode? 'text-white/80' : 'text-black/80'} leading-relaxed`}>
+        <p className={`${darkmode? 'text-white/80' : 'text-black/80'} leading-relaxed lg:text-lg text-xs`}>
           Let's find it all out.
         </p>
         <AnimatePresence>

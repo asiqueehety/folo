@@ -56,13 +56,13 @@ export default function LoginPage() {
   }
 
   return (
-    <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-8 shadow-xl rounded-3xl max-w-md mx-auto ${darkmode ? 'text-neutral-100 bg-neutral-800' : 'text-blue-950 bg-white/100'}`}>
+    <div className={`${font2.className} flex justify-center items-center flex-col mt-20 p-8 shadow-xl rounded-3xl max-w-md lg:mx-auto mx-2 ${darkmode ? 'text-neutral-100 bg-neutral-800' : 'text-blue-950 bg-white/100'}`}>
       <h1 className={`${font1.className} text-5xl mb-6`}>Login to <span className='text-purple-600'>FoLo</span></h1>
 
       <form className='flex flex-col space-y-5 w-full'>
         <input 
           type='text'
-          className={`input-field ${darkmode ? 'bg-neutral-800 text-neutral-200 placeholder:text-neutral-400' : 'bg-neutral-100 text-neutral-950 border-neutral-950/50 border-4'}`}
+          className={`input-field ${darkmode ? 'bg-neutral-800 text-neutral-800 placeholder:text-neutral-400' : 'bg-neutral-100 text-neutral-950 border-neutral-950/50 border-4'}`}
           placeholder='Email or Username'
           onChange={(e)=> setEmail(e.target.value)}
           value={emailOrUsername}
@@ -70,7 +70,7 @@ export default function LoginPage() {
 
         <input 
           type='password'
-          className={`input-field ${darkmode ? 'bg-neutral-800 text-neutral-200 placeholder:text-neutral-400' : ''}`}
+          className={`input-field ${darkmode ? 'bg-neutral-800 text-neutral-800 placeholder:text-neutral-400' : ''}`}
           placeholder='Password'
           onChange={(e)=> setpw(e.target.value)}
           value={pw}

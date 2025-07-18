@@ -99,7 +99,7 @@ export default function SignupPage() {
 
 
   return (
-    <div className={`${font2.className} flex justify-center items-center flex-col mt-4 p-10 bg-gradient-to-br from-purple-50 via-white to-indigo-50 shadow-2xl rounded-3xl border border-gray-300 max-w-xl mx-auto`}> 
+    <div className={`${font2.className} flex justify-center items-center flex-col mt-4 p-10 bg-gradient-to-br from-purple-50 via-white to-indigo-50 shadow-2xl rounded-3xl border border-gray-300 max-w-xl lg:mx-auto mx-2`}> 
       <h1 className={`${font1.className} text-5xl text-indigo-900 mb-8 tracking-wide`}>Sign Up to <span className='text-purple-700'>FoLo</span></h1>
 
       <form className='flex flex-col space-y-5 w-full'>

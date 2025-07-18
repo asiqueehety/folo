@@ -230,7 +230,7 @@ export default function LostMiniCard(props) {
 
   if (!post) return null;
   return (
-    <div className="w-full p-3 bg-neutral-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
+    <div className="w-full lg:p-3 p-1 bg-neutral-800 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 my-1 flex flex-col hover:scale-[0.99]">
         <div className='flex flex-row justify-between'>
             <Edit className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_pic')}/>
             {!post_deleted? (!confirm_delete? 
@@ -267,7 +267,7 @@ export default function LostMiniCard(props) {
             />
             <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_pic');set_edit_content_pic(false)}} disabled={!content_pic}>Save</button>
         </div>}
-        <div className='flex flex-row'>
+        <div className='flex lg:flex-row flex-col items-center lg:items-start'>
             <Image src={!edit_content_pic? content_pic : post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"
             onClick={() => {
                 if (typeof expand_image === 'function') {
@@ -278,7 +278,7 @@ export default function LostMiniCard(props) {
             }}
             />
             <div className='flex flex-col ml-2'>
-                <h3 className="text-lg font-semibold mb-1 flex flex-row">
+                <h3 className="text-lg font-semibold mb-1 flex lg:flex-row flex-col">
                 {!edit_content_name? content_name : post.content_name}
                 {!edit_content_name?
                 <Edit className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_name')}/>
@@ -290,7 +290,7 @@ export default function LostMiniCard(props) {
                 {!edit_content_details_model? (content_details_model? content_details_model: '') : post.content_details.model}
                 {!edit_content_details_model? <Edit className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_details/model')}/>
                 :
-                <div className='flex flex-row'>
+                <div className='flex lg:flex-row flex-col'>
                     <input type='text' className="peer min-w-16 max-w-26 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Content Name' onChange={(e)=>{set_content_details_model(e.target.value)}} value={content_details_model}></input>
                     <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('content_details/model');set_edit_content_details_model(false)}} disabled={!content_details_model}>Save</button>
                 </div>
@@ -313,22 +313,22 @@ export default function LostMiniCard(props) {
             </div>
         </div>
         <div className='flex flex-row justify-between'>
-            <button className="mt-2 px-3 py-1 text-sm bg-black/60 rounded-full hover:bg-red-700 transition-colors"
+            <button className="mt-2 lg:px-3 px-1 py-0 lg:text-sm text-xs bg-black/60 rounded-full hover:bg-red-700 transition-colors"
             onClick={() => {set_show_details(!show_details);set_show_claim(false);set_map_click_tip(false);}}
             >
                 {show_details? 'Hide Details' : 'View Details'}
             </button>
             
-            <div className="text-lg text-gray-300 mb-0 animated-gradient-bg-rewardBtn w-fit px-3 py-1 rounded-3xl flex flex-row">$ 
+            <div className="lg:text-lg text-sm text-gray-300 mb-0 animated-gradient-bg-rewardBtn w-fit px-3 py-1 rounded-3xl flex flex-row">$ 
             {!edit_content_finder_reward? content_finder_reward : post.finder_reward}
             {!edit_content_finder_reward? <Edit className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('finder_reward')}/>
             :
             <div className='flex flex-row'>
-                <input type='number' className="peer min-w-16 max-w-26 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Finder Reward' onChange={(e)=>{set_content_finder_reward(e.target.value)}} value={content_finder_reward}></input>
+                <input type='number' className="peer lg:min-w-16 lg:max-w-26 min-w-10 max-w-16 m-1 placeholder:text-white/30 placeholder:text-xs border border-gray-300 rounded-xl text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition" placeholder='Finder Reward' onChange={(e)=>{set_content_finder_reward(e.target.value)}} value={content_finder_reward}></input>
                 <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('finder_reward');set_edit_content_finder_reward(false)}} disabled={!content_finder_reward}>Save</button>
             </div>
             }</div>
-            <button className="mt-2 px-3 py-1 text-sm bg-black/60 rounded-full hover:bg-red-700 transition-colors"
+            <button className="mt-2 lg:px-3 px-1 py-1 text-sm bg-black/60 rounded-full hover:bg-red-700 transition-colors"
             onClick={() => {set_show_claim(!show_claim);set_show_details(false);set_map_click_tip(false);}}
             >
                 {show_claim? 'Hide Claims' : 'View Claims'}<div>{claims.length}</div>
@@ -358,7 +358,7 @@ export default function LostMiniCard(props) {
                 </div>
                 }
             </div>
-            <div className={`grid grid-cols-[1fr_3fr] m-2 w-full h-fit p-1 rounded-xl`}
+            <div className={`grid lg:grid-cols-[1fr_3fr] grid-rows-1 m-2 w-full h-fit p-1 rounded-xl`}
             >
                 <div className='font-semibold text-xs'>Special markings </div><div className='bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg text-md p-1 w-fit flex flex-row'>{!!post.content_details.special? (!edit_content_details_special? content_details_special : post.content_details.special): 'None'}
                 {!edit_content_details_special? <Edit className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('content_details/special')}/>
@@ -369,7 +369,7 @@ export default function LostMiniCard(props) {
                 </div>
                 }</div>
             </div>
-            <div className={`grid grid-cols-[1fr_3fr] m-2 w-full h-fit p-1 rounded-xl`}
+            <div className={`grid lg:grid-cols-[1fr_3fr] grid-rows-1 m-2 w-full h-fit p-1 rounded-xl`}
             >
                 <p className='font-semibold text-xs'>Lost</p>
                 <div className='bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg text-md p-1 w-fit flex flex-row'>

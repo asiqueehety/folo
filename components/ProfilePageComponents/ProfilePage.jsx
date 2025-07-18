@@ -68,7 +68,7 @@ export default function ProfilePage() {
 
     return (
         <div>
-            <div className='flex flex-row *:w-full gap-2'>
+            <div className='flex lg:flex-row flex-col *:w-full gap-2'>
                 <div className='flex-2'><UserProfile darkmode={darkmode} user={user} /></div>
                 <div className='flex-5'><UserPosts darkmode={darkmode} posts={posts} expand_image={set_expand_image}/></div>
             </div>
