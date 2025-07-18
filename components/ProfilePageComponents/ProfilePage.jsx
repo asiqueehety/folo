@@ -80,7 +80,7 @@ export default function ProfilePage() {
                 exit={{opacity:0, height:0}}
                 transition={{duration:0.3}}
                 >
-                <Image src={expand_image.content_pic} alt={expand_image.content_name} width={600} height={600} className={` ${zoomed? 'w-[95%] h-[95%]' : ''} rounded-xl object-cover fixed z-[60] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden`} onDoubleClick={()=>{set_zoomed(!zoomed)}}/>
+                <Image src={expand_image} alt={`expanded image`} width={600} height={600} className={` ${zoomed? 'w-[95%] h-[95%]' : ''} rounded-xl object-cover fixed z-[60] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden`} onDoubleClick={()=>{set_zoomed(!zoomed)}}/>
                 <div className='fixed top-0 right-0 left-0 bottom-0 object-cover bg-black/60 backdrop-blur-sm z-50' onClick={()=>{set_expand_image(null)}}></div>
                 </motion.div>
                 }

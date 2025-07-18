@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { getComplementaryColor } from '../../../lib/complementaryColor'
 import {Edit, Trash2} from 'lucide-react'
 import dynamic from 'next/dynamic';
+import FoundClaimCard from './FoundClaimCard'
 const MapContainerProfileCards = dynamic(() => import ('@/components/ProfilePageComponents/LostFoundTabs/Map4/MapContainerProfileCards'), { ssr: false });
 
 export default function LostMiniCard(props) {
@@ -43,7 +44,8 @@ export default function LostMiniCard(props) {
     const [edit_value, set_edit_value] = useState(null)
     const [selectedFile, setSelectedFile] = useState(null);
     const [post_deleted, set_post_deleted] = useState(false)
-
+    const [show_claim, set_show_claim] = useState(false)
+    const [claims, set_claims] = useState([])
 
     function formatDate(input) {
         const date = new Date(input);
@@ -76,6 +78,37 @@ export default function LostMiniCard(props) {
             set_distance(getDistance({lat: userPosition[0], lng: userPosition[1]}, avg_location(post.content_location)))
         }
     }, [post, userPosition])
+
+    useEffect(() => {
+        if(post)
+        {
+            get_claims()
+        }
+    }, [post])
+    async function get_claims() {
+        try {
+            const response = await fetch(`/api/get_claims/found`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    post_id: post._id,
+                }),
+            });
+    
+            if (!response.ok) {
+                console.error('Failed to fetch claims:', response.statusText);
+                return;
+            }
+    
+            const data = await response.json();
+            set_claims(data.claims);
+        } catch (err) {
+            console.error('Error fetching claims:', err);
+        }
+    }
+    
 
   function editClicked(route) {
     switch (route) {
@@ -238,7 +271,7 @@ export default function LostMiniCard(props) {
             <Image src={!edit_content_pic? content_pic : post.content_pic} alt={post.content_name} width={120} height={120} className="rounded-xl object-cover"
             onClick={() => {
                 if (typeof expand_image === 'function') {
-                  expand_image(post);
+                  expand_image(post.content_pic);
                 } else {
                   console.error("expand_image is not a function", expand_image);
                 }
@@ -281,10 +314,11 @@ export default function LostMiniCard(props) {
         </div>
         <div className='flex flex-row justify-between'>
             <button className="mt-2 px-3 py-1 text-sm bg-black/60 rounded-full hover:bg-red-700 transition-colors"
-            onClick={() => {set_show_details(!show_details);set_map_click_tip(false);}}
+            onClick={() => {set_show_details(!show_details);set_show_claim(false);set_map_click_tip(false);}}
             >
                 {show_details? 'Hide Details' : 'View Details'}
             </button>
+            
             <div className="text-lg text-gray-300 mb-0 animated-gradient-bg-rewardBtn w-fit px-3 py-1 rounded-3xl flex flex-row">$ 
             {!edit_content_finder_reward? content_finder_reward : post.finder_reward}
             {!edit_content_finder_reward? <Edit className="text-red-500 hover:scale-105 h-4 w-4 m-0.5" onClick={()=>editClicked('finder_reward')}/>
@@ -294,6 +328,11 @@ export default function LostMiniCard(props) {
                 <button className='bg-yellow-600 text-white p-1 m-0 h-fit w-fit rounded-2xl hover:bg-cyan-950 transition-all text-sm' onClick={()=>{saveClicked('finder_reward');set_edit_content_finder_reward(false)}} disabled={!content_finder_reward}>Save</button>
             </div>
             }</div>
+            <button className="mt-2 px-3 py-1 text-sm bg-black/60 rounded-full hover:bg-red-700 transition-colors"
+            onClick={() => {set_show_claim(!show_claim);set_show_details(false);set_map_click_tip(false);}}
+            >
+                {show_claim? 'Hide Claims' : 'View Claims'}<div>{claims.length}</div>
+            </button>
         </div>
         <AnimatePresence>
         {show_details && (
@@ -303,10 +342,10 @@ export default function LostMiniCard(props) {
             exit={{ opacity:0, height:0}}
             transition={{ duration: 0.3 }}
         >
-            <div className={`flex items-center m-2 w-fit h-fit p-1 rounded-xl flex flex-row`}
+            <div className={`flex items-center m-2 w-fit h-fit p-1 rounded-xl flex-row`}
             style={ !edit_content_details_color? {color: getComplementaryColor(content_details_color), backgroundColor: content_details_color } : {color: getComplementaryColor(post.content_details.color), backgroundColor: post.content_details.color }}
             >
-                {!edit_content_details_color? <div className={`flex items-center m-2 w-fit h-fit p-1 rounded-xl flex flex-row`}
+                {!edit_content_details_color? <div className={`flex items-center m-2 w-fit h-fit p-1 rounded-xl flex-row`}
                 style={ content_details_color? {color: getComplementaryColor(content_details_color), backgroundColor: content_details_color } : {color: getComplementaryColor(post.content_details.color), backgroundColor: post.content_details.color }}
                 >
                     Color of the item
@@ -383,6 +422,22 @@ export default function LostMiniCard(props) {
             </div>
         </motion.div>
         )}
+        </AnimatePresence>
+        <AnimatePresence>
+            {show_claim && (
+                <motion.div
+                initial={{opacity:0, height:0}}
+                animate={{ opacity:1, height:'auto'}}
+                exit={{ opacity:0, height:0}}
+                transition={{ duration: 0.3 }}
+                >
+                    {claims.map((claim, index) => (
+                        <div key={index}>
+                            <FoundClaimCard claim={claim} expand_image={expand_image}/>
+                        </div>
+                    ))}
+                </motion.div>
+            )}
         </AnimatePresence>
         <AnimatePresence>
             {map_click_tip && (

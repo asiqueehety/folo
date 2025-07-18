@@ -35,8 +35,8 @@ export default function NavBar() {
     <div className={`${font1.className} fixed z-50`}>
       <nav className='w-screen h-20 bg-cyan-900 grid xl:grid-cols-[7fr_4fr] lg:grid-cols-[3fr_2fr] grid-cols-[1fr_1fr] animated-gradient-bg-navbar '>
         <div className='m-4 text-white flex md:flex-row flex-col'>
-          <h1 className='lg:text-6xl text-3xl'><button onClick={()=>{router.push('/')}}>FoLo</button></h1>
-          <p className='lg:text-xl text-sm flex justify-end'>Just find it.</p>
+          <h1 className='lg:text-6xl text-3xl cursor-pointer'><button onClick={()=>{router.push('/')}}>FoLo</button></h1>
+          <p className='lg:text-xl text-sm flex justify-end cursor-pointer'>Just find it.</p>
         </div>
         <div className='xl:flex xl:flex-row h-fit'>
           <button

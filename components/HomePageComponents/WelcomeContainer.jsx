@@ -57,7 +57,7 @@ export default function WelcomeContainer(props) {
 
   return (
     <>
-      <div className={`${darkmode? 'bg-neutral-800 border-none':'bg-white/10 backdrop-blur-md border-white/20'} rounded-3xl border-2  shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 ${darkmode? 'text-white' : 'text-black'} font-sans m-1 mt-1.5 ${font1.className}`} onMouseEnter={()=>{set_hovered(true)}} onMouseLeave={()=>{set_hovered(false)}} onClick={()=>{router.push('/profile')}}>
+      <div className={`${darkmode? 'bg-neutral-800 border-none':'bg-white/10 backdrop-blur-md border-white/20'} cursor-pointer rounded-3xl border-2  shadow-xl hover:bg-white/20 hover:shadow-2xl transition-all duration-500 ease-in-out transform hover:scale-[0.99] p-4 ${darkmode? 'text-white' : 'text-black'} font-sans m-1 mt-1.5 ${font1.className}`} onMouseEnter={()=>{set_hovered(true)}} onMouseLeave={()=>{set_hovered(false)}} onClick={()=>{router.push('/profile')}}>
         <h1 className="text-5xl font-extrabold mb-3 tracking-wide">
           Welcome back, {user_name}
         </h1>

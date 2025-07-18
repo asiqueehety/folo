@@ -10,7 +10,7 @@ export default function ClaimYours({ onClose , post, loser_id , setClaimed}) {
 
   useEffect(() => {
     checkClaim();
-  }, [claimed]);
+  }, []);
 
 
   async function checkClaim() {
@@ -34,7 +34,14 @@ export default function ClaimYours({ onClose , post, loser_id , setClaimed}) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({claimMessage, con_pic, post, loser_id}),
+      body: JSON.stringify(
+        {
+          claim_message: claimMessage, 
+          claim_pic: con_pic, 
+          post_id: post._id, 
+          loser_id: loser_id
+        }
+      ),
 
     });
     const data = await res.json();
