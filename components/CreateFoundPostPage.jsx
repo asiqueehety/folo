@@ -90,7 +90,7 @@ export default function CreateFoundPostPage() {
 
   function allOk()
   {
-    return !(con_name=='' || con_type=='' || con_color=='' || con_foundwhen_time=='' || con_foundwhen_date == '' || con_location.length < 1)
+    return !(con_name=='' || con_type=='' || con_color=='' || con_foundwhen_time=='' || con_foundwhen_date == '' || con_location.length < 1 || con_reward=='' || con_pic=='')
   }
 
     const handleUpload = async (e) => {

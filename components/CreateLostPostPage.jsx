@@ -93,7 +93,7 @@ export default function CreateLostPostPage() {
 
   function allOk()
   {
-    return !(con_name=='' || con_type=='' || con_color=='' || con_lastused_time=='' || con_lastused_date == '' || con_location.length < 2)
+    return !(con_name=='' || con_type=='' || con_color=='' || con_lastused_time=='' || con_lastused_date == '' || con_location.length < 2 || con_reward=='' || con_pic=='')
   }
 
     const handleUpload = async (e) => {
