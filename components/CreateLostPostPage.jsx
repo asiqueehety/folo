@@ -102,6 +102,7 @@ export default function CreateLostPostPage() {
     setSelectedFile(file);
     const formData = new FormData();
     formData.append('file', file);
+    console.log(formData)
 
     try {
         const res = await fetch('/api/upload_image', {
