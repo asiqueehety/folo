@@ -8,6 +8,10 @@ You'll never know, until you stumble upon FoLo. A platform for you to find what 
 
 ## Live Demo
 https://foundlost.vercel.app/
+
+## YouTube Demo video:
+https://youtu.be/2xR4wx0PKTs
+
 ##
 ## Run Locally
 
