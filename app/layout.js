@@ -7,6 +7,9 @@ import DarkModeToggle from "@/components/DarkModeToggle";
 export const metadata = {
   title: "FoLo - Found, lost and co.",
   description: "Found something lost? or just lost something? FoLo is here to help!",
+  icons: {
+    icon: 'resources/folo_icon.ico',
+  },
 };
 
 export default function RootLayout({ children }) {
